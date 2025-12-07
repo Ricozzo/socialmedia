@@ -23,8 +23,8 @@ export interface ISignupPayload {
   username: string;
   firstName: string;
   lastName: string;
-  birth_year: number;
-  phone_number: string;
+  birthYear: number;
+  phone: string;
 }
 
 export interface ILoginResponse {
