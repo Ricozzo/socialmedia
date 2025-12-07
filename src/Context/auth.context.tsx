@@ -1,32 +1,7 @@
 import React, { useState, useEffect, createContext, ReactNode } from "react";
 import axios from "axios";
+import { IUser, AuthContextType } from "../types"
 
-// Definição da Interface do Usuário
-interface IUser {
-  id: number;
-  email: string;
-  password: string;
-  username: string;
-  firstName: string;
-  lastName: string;
-  birthYear: number;
-  phone: string;
-  profilePictureUrl: string;
-  created_at: string;
-}
-
-// Definição da Interface do Contexto
-interface AuthContextType {
-  isLoggedIn: boolean;
-  isLoading: boolean;
-  user: IUser | null;
-  storeToken: (token: string) => void;
-  authenticateUser: () => void;
-  logoutUser: () => void;
-  getToken: () => string | null;
-}
-
-// Valor Padrão para o Contexto
 const initialContextValue: AuthContextType = {
   isLoggedIn: false,
   isLoading: false,
@@ -37,11 +12,8 @@ const initialContextValue: AuthContextType = {
   getToken: () => null,
 };
 
-// Criação do Contexto Tipado
-// Passamos o valor inicial para garantir a tipagem correta
 const AuthContext = createContext<AuthContextType>(initialContextValue);
 
-// Definição das Props do Provider
 interface AuthProviderWrapperProps {
   children: ReactNode;
 }
@@ -75,7 +47,7 @@ function AuthProviderWrapper({ children }: AuthProviderWrapperProps) {
 
     if (storedToken) {
       axios
-        .get(`${import.meta.env.VITE_APP_SERVER_URL}/auth/verify`, {
+        .get(`${import.meta.env.VITE_API_SERVER_URL}/auth/verify`, {
           headers: {
             Authorization: `Bearer ${storedToken}`,
           },

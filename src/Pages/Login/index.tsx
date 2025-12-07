@@ -1,37 +1,45 @@
-import { useState, useContext } from "react";
-import axios from "axios";
+import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Context/auth.context";
 import authService from "../../Services/auth.services";
+import { ILoginPayload } from "../../types";
 
-function LogInPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState(undefined);
+function LogInPage(): JSX.Element {
+  const [formState, setFormState] = useState<ILoginPayload>({
+    email: "",
+    password: "",
+  });
+  const [errorMessage, setErrorMessage] = useState<string | undefined>(
+    undefined
+  );
 
   const navigate = useNavigate();
 
-  //destructuring the authContext Object
   const { storeToken, authenticateUser } = useContext(AuthContext);
 
-  const handleEmail = (e) => setEmail(e.target.value);
-  const handlePassword = (e) => setPassword(e.target.value);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
 
-  const handleLoginSubmit = (e) => {
+    setFormState((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleLoginSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    //if ypu submit something on react you have to requestbody
-    const requestBody = { email, password };
 
     authService
-      .login(requestBody)
+      .login(formState)
       .then((response) => {
         storeToken(response.data.authToken);
-        //authenticate user
         authenticateUser();
         navigate(`/`);
       })
       .catch((error) => {
-        console.log(error);
+        const errorDescription =
+          error.response?.data.message || "Ocorreu um erro desconhecido.";
+        setErrorMessage(errorDescription);
       });
   };
 
@@ -41,21 +49,30 @@ function LogInPage() {
 
       <form onSubmit={handleLoginSubmit}>
         <label>Email:</label>
-        <br></br>
-        <input type="email" name="email" value={email} onChange={handleEmail} />
-        <br></br>
+        <br />
+        <input
+          type="email"
+          name="email"
+          value={formState.email}
+          onChange={handleChange}
+        />
+        <br />
+
         <label>Password:</label>
-        <br></br>
+        <br />
         <input
           type="password"
           name="password"
-          value={password}
-          onChange={handlePassword}
+          value={formState.password}
+          onChange={handleChange}
         />
-        <br></br>
+        <br />
+
         <button type="submit">Login</button>
       </form>
-      {/*       {errorMessage && <p className="error-message">{errorMessage}</p>} */}
+
+      {/* 3. Renderizando a Mensagem de Erro (Descomentei para você usar) */}
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
 
       <p>Don't have an account yet?</p>
       <Link to={"/signup"}> Sign Up</Link>
