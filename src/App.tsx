@@ -2,14 +2,14 @@ import './App.css'
 import {Routes, Route} from 'react-router-dom';
 import {Image, Video, Transformation, CloudinaryContext} from 'cloudinary-react';
 
-import HomePage from './Pages/Home'
-import Navbar from './Components/Navbar';
+//import HomePage from './Pages/Home'
+//import Navbar from './Components/Navbar';
 import LoginPage from './Pages/Login';
 import SignUpPage from './Pages/Signup';
-import EventDetailsPage from './Pages/Details';
-import EditEventPage from './Pages/EditEvent';
-import Footer from './Components/Footer';
-import Events from './Pages/Events/Events';
+//import EventDetailsPage from './Pages/Details';
+//import EditEventPage from './Pages/EditEvent';
+//import Footer from './Components/Footer';
+//import Events from './Pages/Events/Events';
 import { Logout } from '@mui/icons-material';
 import IsAnon from './Components/isAnon';
 import IsPrivate from './Components/isPrivate';
