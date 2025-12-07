@@ -1,12 +1,12 @@
 import React, { useState, useEffect, createContext, ReactNode } from "react";
-import axios from "axios";
-import { IUser, AuthContextType } from "../types"
+import authService from "../Services/auth.services";
+import { IUser, AuthContextType } from "../types";
 
 const initialContextValue: AuthContextType = {
   isLoggedIn: false,
   isLoading: false,
   user: null,
-  storeToken: () => {}, // Funções vazias como placeholder
+  storeToken: () => {},
   authenticateUser: () => {},
   logoutUser: () => {},
   getToken: () => null,
@@ -43,32 +43,37 @@ function AuthProviderWrapper({ children }: AuthProviderWrapperProps) {
   };
 
   const authenticateUser = (): void => {
-    const storedToken = localStorage.getItem("authToken");
-
-    if (storedToken) {
-      axios
-        .get(`${import.meta.env.VITE_API_SERVER_URL}/auth/verify`, {
-          headers: {
-            Authorization: `Bearer ${storedToken}`,
-          },
-        })
-        .then((response) => {
-          setIsLoggedIn(true);
-          setIsLoading(false);
-          setUser(response.data as IUser);
-        })
-        .catch((err) => {
-          console.error("Authentication Error:", err);
-          setIsLoggedIn(false);
-          setIsLoading(false);
+        const storedToken = localStorage.getItem("authToken");
+    
+        if (storedToken) {
+          // *** COMENTE ESTE BLOCO ***
+          /*
+          authService
+            .verify() 
+            .then((response) => {
+              setIsLoggedIn(true);
+              setUser(response.data as IUser);
+            })
+            .catch((err) => {
+              console.error("Authentication Error:", err);
+              setIsLoggedIn(false);
+              setUser(null);
+            })
+            .finally(() => { // Adicionar um finally aqui pode ser uma boa ideia!
+                setIsLoading(false); 
+            });
+          */
+          // *** ADICIONE ESTA SAÍDA DE EMERGÊNCIA ***
+          setIsLoggedIn(false); 
+          setIsLoading(false); 
           setUser(null);
-        });
-    } else {
-      setIsLoggedIn(false);
-      setIsLoading(false);
-      setUser(null);
-    }
-  };
+    
+        } else {
+          setIsLoggedIn(false);
+          setIsLoading(false);
+          setUser(null);
+        }
+      };
 
   useEffect(() => {
     authenticateUser();

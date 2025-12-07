@@ -1,81 +1,131 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
 import authService from "../../Services/auth.services";
+import { ISignupPayload } from "../../types";
 
-function SignUpPage() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [name, setName] = useState("");
-    const [errorMessage, setErrorMessage] = useState(undefined);
+function SignUpPage(): JSX.Element {
+  const [form, setForm] = useState<ISignupPayload>({
+    email: "",
+    username: "",
+    password: "",
+    firstName: "",
+    lastName: "",
+    birthYear: 2007,
+    phone: "",
+  });
+  const [errorMessage, setErrorMessage] = useState<string | undefined>(
+    undefined
+  );
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    // Handle Change of Inputs
-    const handleEmail = (e) => setEmail(e.target.value);
-    const handlePassword = (e) => setPassword(e.target.value);
-    const handleName = (e) => setName(e.target.value);
+  const handleForm = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
 
-    // Handle the Submission of the Form
-    const handleSignupSubmit = (e) =>{
-        e.preventDefault();
-        
-        const requestBody = {name, email, password};
+    setForm((prev) => ({
+      ...prev,
+      [name]: name === 'birthYear' ? Number(value) : value
+    }));
+  };
 
-        authService.signup(requestBody)
-        .then((response)=>{
-            navigate('/login')
-        })
-        .catch((error)=>{
-            const errorDescription = error.response.data.message;
-            setErrorMessage(errorDescription);
-        })
-        
-    }     
+  const handleSignupSubmit = (e: React.ChangeEvent<HTMLFormElement>): void => {
+    e.preventDefault();
 
-    return (
-      <div className="signup-page">
-        <h1>Sign Up</h1>
+    authService
+      .signup(form)
+      .then((response) => {
+        navigate("/auth/login");
+      })
+      .catch((error) => {
+        const errorDescription =
+          error.response?.data.message || "Ocorreu um erro desconhecido.";
+        setErrorMessage(errorDescription);
+      });
+  };
 
-        <form onSubmit={handleSignupSubmit}>
-          <div>
-            <label>Email:</label>
-            <br />
-            <input
-              type="email"
-              name="email"
-              value={email}
-              onChange={handleEmail}
-            />
-          </div>
-          <div>
-            <label>Password:</label>
-            <br />
-            <input
-              type="password"
-              name="password"
-              value={password}
-              onChange={handlePassword}
-            />
-          </div>
-          <div>
-            <label>Name:</label>
-            <br />
-            <input type="text" name="name" value={name} onChange={handleName} />
-          </div>
-          <div>
-            <button type="submit">Sign Up</button>
-          </div>
-        </form>
+  return (
+    <div className="signup-page">
+      <h1>Se inscrever</h1>
 
-        {errorMessage && <p className="error-message">{errorMessage}</p>}
-
-        <p>Already have account?</p>
-        <div className="buttonLogin">
-          <Link to={"/login"}> Login</Link>
+      <form onSubmit={handleSignupSubmit}>
+        <div>
+          <label>Email:</label>
+          <br />
+          <input
+            type="email"
+            name="email"
+            value={form.email}
+            onChange={handleForm}
+          />
         </div>
+        <div>
+          <label>Senha:</label>
+          <br />
+          <input
+            type="password"
+            name="password"
+            value={form.password}
+            onChange={handleForm}
+          />
+        </div>
+        <div>
+          <label>Username:</label>
+          <br />
+          <input
+            type="text"
+            name="username"
+            value={form.username}
+            onChange={handleForm}
+          />
+        </div>
+        <div>
+          <label>Nome:</label>
+          <br />
+          <input
+            type="text"
+            name="firstName"
+            value={form.firstName}
+            onChange={handleForm}
+          />
+        </div>
+        <div>
+          <label>Apelido:</label>
+          <br />
+          <input
+            type="text"
+            name="lastName"
+            value={form.lastName}
+            onChange={handleForm}
+          />
+        </div>
+        <div>
+          <label>Ano de Nascimento:</label>
+          <br />
+          <input
+            type="number"
+            name="birthYear"
+            value={form.birthYear}
+            onChange={handleForm}
+          />
+        </div>
+        <div>
+          <label>Telefone:</label>
+          <br />
+          <input type="text" name="phone" value={form.phone} onChange={handleForm} />
+        </div>
+        <div>
+          <button type="submit">Inscrever</button>
+        </div>
+      </form>
+
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
+
+      <p>Já possui uma conta??</p>
+      <div className="buttonLogin">
+        <Link to={"/login"}> Iniciar sessão</Link>
       </div>
-    );
+    </div>
+  );
 }
 
 export default SignUpPage;

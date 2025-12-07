@@ -45,7 +45,7 @@ function LogInPage(): JSX.Element {
 
   return (
     <div className="LoginPage">
-      <h1>Login</h1>
+      <h1>Iniciar Sessão</h1>
 
       <form onSubmit={handleLoginSubmit}>
         <label>Email:</label>
@@ -58,7 +58,7 @@ function LogInPage(): JSX.Element {
         />
         <br />
 
-        <label>Password:</label>
+        <label>Senha:</label>
         <br />
         <input
           type="password"
@@ -71,11 +71,10 @@ function LogInPage(): JSX.Element {
         <button type="submit">Login</button>
       </form>
 
-      {/* 3. Renderizando a Mensagem de Erro (Descomentei para você usar) */}
       {errorMessage && <p className="error-message">{errorMessage}</p>}
 
-      <p>Don't have an account yet?</p>
-      <Link to={"/signup"}> Sign Up</Link>
+      <p>Ainda não tem uma conta??</p>
+      <Link to={"/signup"}>Se inscreva aqui!</Link>
     </div>
   );
 }

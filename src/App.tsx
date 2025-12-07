@@ -50,7 +50,6 @@ function App() {
         />
         */}
 
-        {/* ROTAS ATIVAS (Login e Signup) */}
         <Route
           path="/signup"
           element={
