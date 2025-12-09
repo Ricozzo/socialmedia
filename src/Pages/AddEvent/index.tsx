@@ -1,88 +1,106 @@
-import { useState } from "react";
-import axios from "axios";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import eventService from "../../Services/event.service";
+import { IEventDetail } from "../../types";
 
-function AddEvent({ getAllEvents }) {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [uploading, setUploading] = useState(false);
-  const [eventImage, seteventImage] = useState("");
-  const [information, setInformation] = useState("");
+function AddEvent(): JSX.Element {
+  const [eDetail, setEvent] = useState<IEventDetail>({
+    name: "",
+    description: "",
+    event_date: "",
+    event_time: "",
+    address: "",
+    location_optional: "",
+  });
+  const [errorMessage, setErrorMessage] = useState<string | undefined>(
+    undefined
+  );
 
   const navigate = useNavigate();
 
-  const handleImageChange = async (e) => {
-    try {
-      setUploading(true);
-      const uploadData = new FormData();
-      uploadData.append("imageUrl", e.target.files[0]);
+  const handleEventChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
 
-      const response = await axios.post(
-        `${import.meta.env.VITE_APP_SERVER_URL}/api/upload`,
-        uploadData
-      );
-
-      seteventImage(response.data.fileUrl);
-      setUploading(false);
-    } catch (error) {
-      console.log(error);
-    }
+    setEvent((prevDetail) => ({
+      ...prevDetail,
+      [name]: value,
+    }));
   };
 
-  const handleSubmit = async (e) => {
-    try {
-      e.preventDefault();
-      const body = {
-        title,
-        description,
-        information,
-        imageUrl: eventImage,
-      };
-      await axios.post(
-        `${import.meta.env.VITE_APP_SERVER_URL}/api/events`,
-        body
-      );
-      getAllEvents();
-      setTitle("");
-      setDescription("");
-      setInformation("");
-      seteventImage("");
-    } catch (error) {
-      console.log(error);
-    }
+  const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>): void => {
+    e.preventDefault();
+    eventService
+      .createEvent(eDetail)
+      .then((response) => {
+        navigate("/events");
+      })
+      .catch((error) => {
+        const errorDescription =
+          error.response?.data.message || "Ocorreu um erro ao criar o evento.";
+        setErrorMessage(errorDescription);
+      });
   };
 
   return (
     <div className="add-event">
-      <h3>Add Event</h3>
+      <h3>Novo Evento</h3>
 
       <form onSubmit={handleSubmit}>
         <div className="admAddEvent">
-          <label>Title:</label>
+          <label>Titulo do evento:</label>
           <input
             type="text"
-            name="title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-          <label>Description:</label>
-          <textarea
-            type="text"
-            name="description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            name="name"
+            value={eDetail.name}
+            onChange={handleEventChange}
           />
 
-          <label>Image:</label>
+          <label>Descrição do Evento:</label>
           <input
-            type="file"
-            onChange={(e) => handleImageChange(e)} // Chame a função handleImageChange para atualizar a imagem selecionada
+            type="text"
+            name="description"
+            value={eDetail.description}
+            onChange={handleEventChange}
           />
-          {uploading ? (
-            <p>Image Uploading, please wait</p>
-          ) : (
-            <button type="submit">Submit</button>
-          )}
+
+          <label>Data:</label>
+          <input
+            type="date"
+            name="event_date"
+            value={eDetail.event_date}
+            onChange={handleEventChange}
+          />
+
+          <label>Hora:</label>
+          <input
+            type="time"
+            name="event_time"
+            value={eDetail.event_time}
+            onChange={handleEventChange}
+          />
+
+          <label>Endereço:</label>
+          <input
+            type="text"
+            name="address"
+            value={eDetail.address}
+            onChange={handleEventChange}
+          />
+
+          <label>Endereço 2 (Opcional):</label>
+          <input
+            type="text"
+            name="location_optional"
+            value={eDetail.location_optional}
+            onChange={handleEventChange}
+          />
+        </div>
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
+
+        <div>
+          <button type="submit">Criar Evento</button>
         </div>
       </form>
     </div>

@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
-import { ILoginPayload, IEventResponse, IEventDetail, IUser } from "../types";
+import { IEventResponse, IEventDetail } from "../types";
 
 
 class EventService {
@@ -49,7 +49,6 @@ class EventService {
   // };
 }
 
-// Create one instance object
-const eventsService = new EventsService();
+const eventService: EventService = new EventService();
 
-export default eventsService;
+export default eventService;

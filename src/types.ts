@@ -1,7 +1,6 @@
 export interface IUser {
   id: number;
   email: string;
-  password: string;
   username: string;
   firstName: string;
   lastName: string;
@@ -41,13 +40,7 @@ export interface AuthContextType {
   getToken: () => string | null;
 }
 
-export interface ILoginPayload {
-  email: string;
-  password: string;
-}
-
 export interface IEventDetail {
-  creator_id: number,
   name: string;
   description: string;
   event_date: string;
@@ -56,8 +49,11 @@ export interface IEventDetail {
   location_optional: string;
 }
 
-export interface IEventResponse {
-  authToken: string;
+export interface IEventResponse extends IEventDetail {
+  _id: string;
+  creator_id: number;
+  created_at: string; 
+  updated_at: string;
 }
 
 
