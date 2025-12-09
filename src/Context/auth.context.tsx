@@ -46,24 +46,6 @@ function AuthProviderWrapper({ children }: AuthProviderWrapperProps) {
         const storedToken = localStorage.getItem("authToken");
     
         if (storedToken) {
-          // *** COMENTE ESTE BLOCO ***
-          /*
-          authService
-            .verify() 
-            .then((response) => {
-              setIsLoggedIn(true);
-              setUser(response.data as IUser);
-            })
-            .catch((err) => {
-              console.error("Authentication Error:", err);
-              setIsLoggedIn(false);
-              setUser(null);
-            })
-            .finally(() => { // Adicionar um finally aqui pode ser uma boa ideia!
-                setIsLoading(false); 
-            });
-          */
-          // *** ADICIONE ESTA SAÍDA DE EMERGÊNCIA ***
           setIsLoggedIn(false); 
           setIsLoading(false); 
           setUser(null);

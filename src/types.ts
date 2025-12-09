@@ -40,3 +40,24 @@ export interface AuthContextType {
   logoutUser: () => void;
   getToken: () => string | null;
 }
+
+export interface ILoginPayload {
+  email: string;
+  password: string;
+}
+
+export interface IEventDetail {
+  creator_id: number,
+  name: string;
+  description: string;
+  event_date: string;
+  event_time: string;
+  address: string;
+  location_optional: string;
+}
+
+export interface IEventResponse {
+  authToken: string;
+}
+
+
