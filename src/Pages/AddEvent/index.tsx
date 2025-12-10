@@ -73,7 +73,7 @@ function AddEvent(): JSX.Element {
             onChange={handleEventChange}
           />
 
-          <label>Hora:</label>
+          <label>Horário:</label>
           <input
             type="time"
             name="event_time"

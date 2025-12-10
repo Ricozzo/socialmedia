@@ -39,11 +39,11 @@ function EventDetailsPage() {
 
       {isCreator && (
         <Link to={`/events/edit/${eventId}`}>
-          <button>Edit Event</button>
+          <button>Editar Evento</button>
         </Link>
       )}
       <Link to="/events">
-        <button>Back to events</button>
+        <button>Voltar</button>
       </Link>
     </div>
   );
