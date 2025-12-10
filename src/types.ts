@@ -11,6 +11,20 @@ export interface IUser {
   updated_at: string;
 }
 
+export interface IProfile {
+  username: string;
+  first_name: string;
+  last_name: string;
+  profile_picture_url: string;
+}
+
+export interface IProfileResponse extends IProfile {
+  _id: string;
+  creator_id: number;
+  created_at: string; 
+  updated_at: string;
+}
+
 export interface ILoginPayload {
   email: string;
   password: string;

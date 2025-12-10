@@ -6,7 +6,8 @@ import SignUpPage from "./Pages/Signup/index.tsx";
 import IsAnon from "./Components/isAnon/index.tsx";
 import AddEvents from "./Pages/AddEvent/index.tsx";
 import DetailsEvent from "./Pages/Details/index.tsx";
-import UpdateEvent from "./Pages/EditEvent/index.tsx"
+import UpdateEvent from "./Pages/EditEvent/index.tsx";
+import MyProfile from "./Pages/MyProfile/index.tsx";
 
 function Navbar() {
   return <header>Barra de Navegação Aqui</header>;
@@ -35,7 +36,7 @@ function App() {
             </IsAnon>
           }
         />
-           
+        <Route path="/profile/:username" element={<MyProfile />} />
         <Route
           path="/login"
           element={

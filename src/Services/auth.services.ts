@@ -1,13 +1,13 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
-import { ILoginPayload, ILoginResponse, ISignupPayload, IUser } from "../types";
+import { ILoginPayload, ILoginResponse, ISignupPayload, IUser, IProfileResponse } from "../types";
 
 class AuthService {
   private api: AxiosInstance;
 
   constructor() {
-        this.api = axios.create({
-          baseURL: import.meta.env.VITE_API_SERVER_URL || "http://localhost:3000",
-        });
+    this.api = axios.create({
+      baseURL: import.meta.env.VITE_API_SERVER_URL || "http://localhost:3000",
+    });
 
     this.api.interceptors.request.use((config) => {
       const storedToken = localStorage.getItem("authToken");
