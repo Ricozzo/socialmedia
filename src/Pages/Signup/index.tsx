@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, ChangeEvent, FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import authService from "../../Services/auth.services";
 import { ISignupPayload } from "../../types";
@@ -12,7 +12,9 @@ function SignUpPage(): JSX.Element {
     lastName: "",
     birthYear: 2007,
     phone: "",
+    profilePictureUrl: "",
   });
+  const [fileToUpload, setFileToUpload] = useState<File | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | undefined>(
     undefined
   );
@@ -24,15 +26,30 @@ function SignUpPage(): JSX.Element {
 
     setForm((prev) => ({
       ...prev,
-      [name]: name === 'birthYear' ? Number(value) : value
+      [name]: name === "birthYear" ? Number(value) : value,
     }));
   };
 
   const handleSignupSubmit = (e: React.ChangeEvent<HTMLFormElement>): void => {
     e.preventDefault();
 
+    const uploadData = new FormData();
+
+    Object.keys(form).forEach((key) => {
+      if (key !== "profilePictureUrl" || form[key as keyof ISignupPayload]) {
+        uploadData.append(
+          key,
+          form[key as keyof ISignupPayload] as string | Blob
+        );
+      }
+    });
+
+    if (fileToUpload) {
+      uploadData.append("profilePicture", fileToUpload);
+    }
+
     authService
-      .signup(form)
+      .signup(uploadData as unknown as ISignupPayload)
       .then((response) => {
         navigate("/auth/login");
       })
@@ -41,6 +58,14 @@ function SignUpPage(): JSX.Element {
           error.response?.data.message || "Ocorreu um erro desconhecido.";
         setErrorMessage(errorDescription);
       });
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    if (e.target.files && e.target.files.length > 0) {
+      setFileToUpload(e.target.files[0]);
+    } else {
+      setFileToUpload(null);
+    }
   };
 
   return (
@@ -111,7 +136,22 @@ function SignUpPage(): JSX.Element {
         <div>
           <label>Telefone:</label>
           <br />
-          <input type="text" name="phone" value={form.phone} onChange={handleForm} />
+          <input
+            type="text"
+            name="phone"
+            value={form.phone}
+            onChange={handleForm}
+          />
+        </div>
+        <div>
+          <label>Imagem de Perfil:</label>
+          <br />
+          <input
+            type="file"
+            name="profilePicture"
+            accept="image/*"
+            onChange={handleFileChange}
+          />
         </div>
         <div>
           <button type="submit">Inscrever</button>

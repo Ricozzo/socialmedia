@@ -24,6 +24,7 @@ export interface ISignupPayload {
   lastName: string;
   birthYear: number;
   phone: string;
+  profilePictureUrl: string;
 }
 
 export interface ILoginResponse {
