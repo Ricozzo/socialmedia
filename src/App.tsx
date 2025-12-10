@@ -6,6 +6,7 @@ import SignUpPage from "./Pages/Signup/index.tsx";
 import IsAnon from "./Components/isAnon/index.tsx";
 import AddEvents from "./Pages/AddEvent/index.tsx";
 import DetailsEvent from "./Pages/Details/index.tsx";
+import UpdateEvent from "./Pages/EditEvent/index.tsx"
 
 function Navbar() {
   return <header>Barra de Navegação Aqui</header>;
@@ -25,6 +26,7 @@ function App() {
                 <Route path="/" element={<HomePage />} />
         <Route path="/events" element={<AddEvents />} />
         <Route path="/events/:eventId" element={<DetailsEvent />} />
+        <Route path="/events/edit/:eventId" element={<UpdateEvent />} />
         <Route
           path="/signup"
           element={
