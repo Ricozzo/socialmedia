@@ -24,9 +24,10 @@ function ProfileDetailsPage() {
 
   if (!profile) {
     return (
-      <div className="flex justify-center items-center h-screen bg-green-50">
-        <div className="text-lg font-medium text-green-700">
-          Carregando perfil...
+      <div className="min-h-screen bg-red-500 py-16 px-4 sm:px-6 lg:px-8">
+        {/* 💡 TESTE AQUI! O CARTÃO PRINCIPAL (Se for vermelho, o Tailwind funciona!) */}
+        <div className="max-w-xl mx-auto bg-white shadow-2xl shadow-green-200/70 p-8 border-4 border-red-500">
+          {/* ... conteúdo do perfil ... */}
         </div>
       </div>
     );
