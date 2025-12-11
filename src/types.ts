@@ -1,5 +1,5 @@
 export interface IUser {
-  id: number;
+  userId: number;
   email: string;
   username: string;
   firstName: string;
@@ -19,7 +19,7 @@ export interface IProfile {
 }
 
 export interface IProfileResponse extends IProfile {
-  _id: string;
+  id: string;
   creator_id: number;
   created_at: string;
   updated_at: string;

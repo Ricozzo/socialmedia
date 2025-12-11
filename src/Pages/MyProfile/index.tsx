@@ -13,7 +13,10 @@ function ProfileDetailsPage() {
   const [isFollowing, setIsFollowing] = useState<boolean | null>(null);
   const { username } = useParams();
   const { user } = useContext(AuthContext);
-  const isCreator = profile && user && profile.creator_id === user.id;
+
+  const profileId = profile?.id ? Number(profile.id) : undefined;
+  const userId = user?.userId ? Number(user.userId) : undefined;
+  const isCreator = profileId && userId && profileId === userId;
 
   const fetchFollowStatus = useCallback(async (followedId: number) => {
     try {
@@ -28,8 +31,12 @@ function ProfileDetailsPage() {
   const handleFollowToggle = async () => {
     if (!profile || !user) return;
 
-    const followedId = profile.creator_id;
+    const followedId = Number(profile.id);
 
+    if (isNaN(followedId)) {
+      console.error("ID do perfil para follow é inválido!");
+      return;
+    }
     try {
       if (isFollowing) {
         await FollowServices.unfollow(followedId);
@@ -51,10 +58,13 @@ function ProfileDetailsPage() {
           `${API_URL}/api/profile/${username}`
         );
         const data = response.data;
-
         setProfile(data);
-        if (user && data.creator_id !== user.id) {
-          fetchFollowStatus(data.creator_id);
+
+        const viewedProfileId = Number(data.id);
+        const loggedInUserId = user?.userId ? Number(user.userId) : undefined;
+
+        if (user && viewedProfileId && viewedProfileId !== loggedInUserId) {
+          fetchFollowStatus(viewedProfileId);
         } else {
           setIsFollowing(null);
         }
@@ -87,6 +97,11 @@ function ProfileDetailsPage() {
   const fullName = `${profile.first_name || profile.username || ""} ${
     profile.last_name || ""
   }`.trim();
+
+  if (profile && user) {
+    console.log("ID DO USUÁRIO LOGADO (AuthContext):", user.userId);
+    console.log("ID DO PERFIL SENDO VISTO (id):", profile.id);
+  }
 
   return (
     <div className="min-h-screen bg-green-50 py-16 px-4 sm:px-6 lg:px-8">

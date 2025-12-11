@@ -22,7 +22,7 @@ class ProfileService {
 
   // GET /api/profile/:username
   public myProfile = (username: string): Promise<AxiosResponse<IProfile>> => {
-    return this.api.post<IProfile>(`/api/profile/${username}`);
+    return this.api.get<IProfile>(`/api/profile/${username}`);
   };
 }
 

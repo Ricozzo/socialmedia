@@ -43,19 +43,38 @@ function AuthProviderWrapper({ children }: AuthProviderWrapperProps) {
   };
 
   const authenticateUser = (): void => {
-        const storedToken = localStorage.getItem("authToken");
-    
-        if (storedToken) {
-          setIsLoggedIn(false); 
-          setIsLoading(false); 
+    const storedToken = localStorage.getItem("authToken");
+    if (storedToken) {
+      authService
+        .verify()
+        .then((response) => {
+          const rawData = response.data;
+
+          const userFromAPI: IUser = {
+            ...rawData,
+            id: rawData.userId,
+          } as IUser;
+          console.log("--- DADOS RECEBIDOS NA VERIFICAÇÃO ---");
+          console.log("RESPOSTA COMPLETA:", response.data);
+          console.log("ID LIDO:", response.data.userId);
+          console.log("---------------------------------------");
+          setIsLoggedIn(true);
+          setIsLoading(false);
+          setUser(userFromAPI); // 🎯 AGORA O USER ESTÁ SALVO!
+        })
+        .catch(() => {
+          removeToken();
+          setIsLoggedIn(false);
+          setIsLoading(false);
           setUser(null);
-    
-        } else {
-          setIsLoggedIn(false);
-          setIsLoading(false);
-          setUser(null);
-        }
-      };
+        });
+    } else {
+      setIsLoggedIn(false);
+      setIsLoading(false);
+      setUser(null);
+    }
+  };
+  // ..
 
   useEffect(() => {
     authenticateUser();

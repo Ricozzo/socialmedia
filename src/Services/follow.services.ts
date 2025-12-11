@@ -30,12 +30,10 @@ class FollowServices {
   public checkFollowStatus = (
     followedId: number
   ): Promise<AxiosResponse<{ isFollowing: boolean }>> => {
-    return this.api.get<{ isFollowing: boolean }>(
-      `/api/follows/status/${followedId}`
-    );
+    return this.api.get<{ isFollowing: boolean }>(`/api/follows/status/${followedId}`);
   };
 
-  // DELETE /api/follows/:followedId
+  // DELETE /follows/:followedId
   public unfollow = (followedId: number): Promise<AxiosResponse<void>> => {
     return this.api.delete(`/api/follows/${followedId}`);
   };
