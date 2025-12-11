@@ -21,8 +21,19 @@ export interface IProfile {
 export interface IProfileResponse extends IProfile {
   _id: string;
   creator_id: number;
-  created_at: string; 
+  created_at: string;
   updated_at: string;
+}
+
+export interface Follow {
+  id: number;
+  follower_id: number;
+  followed_id: number;
+  created_at: Date;
+}
+
+export interface FollowPayload {
+  followed_id: number;
 }
 
 export interface ILoginPayload {
@@ -67,8 +78,6 @@ export interface IEventDetail {
 export interface IEventResponse extends IEventDetail {
   _id: string;
   creator_id: number;
-  created_at: string; 
+  created_at: string;
   updated_at: string;
 }
-
-

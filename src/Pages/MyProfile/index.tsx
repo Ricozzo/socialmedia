@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../../Context/auth.context.tsx";
-import { IProfileResponse } from "../../types.ts";
+import { IProfileResponse, FollowPayload } from "../../types.ts";
 import { Link, useParams } from "react-router-dom";
 
 const API_URL = import.meta.env.VITE_API_SERVER_URL;
@@ -24,12 +24,7 @@ function ProfileDetailsPage() {
 
   if (!profile) {
     return (
-      <div className="min-h-screen bg-red-500 py-16 px-4 sm:px-6 lg:px-8">
-        {/* 💡 TESTE AQUI! O CARTÃO PRINCIPAL (Se for vermelho, o Tailwind funciona!) */}
-        <div className="max-w-xl mx-auto bg-white shadow-2xl shadow-green-200/70 p-8 border-4 border-red-500">
-          {/* ... conteúdo do perfil ... */}
-        </div>
-      </div>
+      <div className="max-w-xl mx-auto bg-white shadow-2xl shadow-green-200/70 p-8 border-4 border-red-500"></div>
     );
   }
 
