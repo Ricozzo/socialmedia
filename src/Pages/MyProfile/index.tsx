@@ -2,7 +2,11 @@ import React from "react";
 import axios from "axios";
 import { useState, useEffect, useContext, useCallback } from "react";
 import { AuthContext } from "../../Context/auth.context.tsx";
-import { IProfileResponse, FollowPayload } from "../../types.ts";
+import {
+  IProfileResponse,
+  FollowPayload,
+  IEventResponse,
+} from "../../types.ts";
 import FollowServices from "../../Services/follow.services.ts";
 import { Link, useParams } from "react-router-dom";
 
@@ -11,6 +15,7 @@ const API_URL = import.meta.env.VITE_API_SERVER_URL;
 function ProfileDetailsPage() {
   const [profile, setProfile] = useState<IProfileResponse | null>(null);
   const [isFollowing, setIsFollowing] = useState<boolean | null>(null);
+  const [events, setEvents] = useState<any[]>([]);
   const { username } = useParams();
   const { user } = useContext(AuthContext);
 
@@ -57,8 +62,12 @@ function ProfileDetailsPage() {
         const response = await axios.get<IProfileResponse>(
           `${API_URL}/api/profile/${username}`
         );
+
         const data = response.data;
         setProfile(data);
+
+        const eventsResponse = await axios.get(`${API_URL}/api/events/user/${data.id}`);
+        setEvents(eventsResponse.data);
 
         const viewedProfileId = Number(data.id);
         const loggedInUserId = user?.userId ? Number(user.userId) : undefined;
@@ -158,6 +167,33 @@ function ProfileDetailsPage() {
               Voltar
             </button>
           </Link>
+        </div>
+        <div className="p-8 border-t border-gray-100">
+          <h2 className="text-2xl font-serif text-gray-800 mb-6">
+            Eventos Criados
+          </h2>
+
+          {events.length > 0 ? (
+            <div className="space-y-4">
+              {events.map((event) => (
+                <div
+                  key={event.id}
+                  className="p-4 border rounded-xl hover:bg-green-50 transition-colors"
+                >
+                  <Link to={`/events/${event.id}`}>
+                    <h3 className="font-bold text-teal-700">{event.name}</h3>
+                    <p className="text-sm text-gray-500">
+                      {new Date(event.event_date).toLocaleDateString()}
+                    </p>
+                  </Link>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-gray-500 italic">
+              Este utilizador ainda não criou eventos.
+            </p>
+          )}
         </div>
       </div>
     </div>
