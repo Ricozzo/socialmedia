@@ -1,3 +1,4 @@
+import React from "react";
 import { Search, Bell, Settings, Leaf } from "lucide-react";
 import { Input } from "../../Components/Ui/input";
 import { Button } from "../../Components/Ui/button";
@@ -10,7 +11,7 @@ export function Header() {
           <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary">
             <Leaf className="h-6 w-6 text-primary-foreground" />
           </div>
-          <span className="text-xl font-bold text-foreground">EcoConnect</span>
+          <span className="text-xl font-bold text-foreground">Kaax</span>
         </div>
 
         <div className="hidden flex-1 max-w-md mx-8 md:block">

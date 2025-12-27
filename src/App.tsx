@@ -10,9 +10,6 @@ import UpdateEvent from "./Pages/EditEvent/index.tsx";
 import MyProfile from "./Pages/MyProfile/index.tsx";
 import HomePage from "./Pages/Home/index.jsx"
 
-function Navbar() {
-  return <header>Barra de Navegação Aqui</header>;
-}
 function Footer() {
   return <footer>Rodapé da Aplicação</footer>;
 }
@@ -20,7 +17,6 @@ function Footer() {
 function App() {
   return (
     <div className="App">
-            <Navbar /> 
       <Routes>
                 <Route path="/" element={<HomePage />} />
         <Route path="/events" element={<AddEvents />} />
