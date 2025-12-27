@@ -8,35 +8,37 @@ import {
   AvatarImage,
 } from "../../Components/Ui/avatar";
 import { Badge } from "../../Components/Ui/badge";
-import { IEventResponse } from "../../types";
 
-export function EventCard(event: IEventResponse) {
-  // Destructuring para facilitar o uso das variáveis
-  const { 
-    name, 
-    description, 
-    event_date, 
-    address, 
-    _id 
-  } = event;
+interface EventCardProps {
+  username: string;
+  profile_picture_url?: string;
+  name: string;
+  description: string;
+  event_date: string;
+  address: string;
+}
 
+export function EventCard({
+  username,
+  profile_picture_url,
+  name,
+  description,
+  event_date,
+  address,
+}: EventCardProps) {
   return (
     <Card className="overflow-hidden animate-fade-in border-border/50 shadow-sm hover:shadow-md transition-shadow">
       <CardContent className="p-0">
-        
         {/* Header do Criador */}
         <div className="flex items-center gap-3 p-4">
           <Avatar className="h-10 w-10 ring-2 ring-primary/20">
-            {/* Note: Ajustei aqui pois creator_id na sua interface é um number */}
+            <AvatarImage src={profile_picture_url} alt={username} />
             <AvatarFallback className="bg-primary text-primary-foreground">
               U
             </AvatarFallback>
           </Avatar>
           <div className="flex-1">
-            <p className="font-semibold text-foreground">Usuário {event.creator_id}</p>
-            <p className="text-sm text-muted-foreground">
-              ID do Criador: {event.creator_id}
-            </p>
+            <p className="font-semibold text-foreground">@{username}</p>
           </div>
         </div>
 
@@ -48,11 +50,17 @@ export function EventCard(event: IEventResponse) {
             className="h-full w-full object-cover transition-transform hover:scale-105"
           />
           <div className="absolute bottom-3 left-3 flex gap-2">
-            <Badge variant="secondary" className="bg-card/90 backdrop-blur text-foreground">
+            <Badge
+              variant="secondary"
+              className="bg-card/90 backdrop-blur text-foreground"
+            >
               <Calendar className="mr-1 h-3 w-3" />
               {event_date}
             </Badge>
-            <Badge variant="secondary" className="bg-card/90 backdrop-blur text-foreground">
+            <Badge
+              variant="secondary"
+              className="bg-card/90 backdrop-blur text-foreground"
+            >
               <MapPin className="mr-1 h-3 w-3" />
               {address}
             </Badge>
@@ -67,15 +75,26 @@ export function EventCard(event: IEventResponse) {
 
           <div className="flex items-center justify-between pt-2 border-t border-border">
             <div className="flex items-center gap-4">
-              <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-primary gap-1">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-muted-foreground hover:text-primary gap-1"
+              >
                 <Heart className="h-4 w-4" />
                 <span className="text-sm">0</span>
               </Button>
-              <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-primary gap-1">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-muted-foreground hover:text-primary gap-1"
+              >
                 <Share2 className="h-4 w-4" />
               </Button>
             </div>
-            <Button size="sm" className="bg-primary hover:bg-primary/90 text-primary-foreground gap-1">
+            <Button
+              size="sm"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground gap-1"
+            >
               <Users className="h-4 w-4" />
               Participar
             </Button>
