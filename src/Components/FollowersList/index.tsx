@@ -1,10 +1,16 @@
+import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../../Components/Ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "../../Components/Ui/avatar";
 import { ScrollArea } from "../../Components/Ui/scroll-area";
-import type { User } from "@/data/mockData";
+
+interface Follower {
+  id: number | string;
+  username: string;
+  profile_picture_url?: string;
+}
 
 interface FollowersListProps {
-  followers: User[];
+  followers: Follower[];
 }
 
 export function FollowersList({ followers }: FollowersListProps) {
@@ -24,17 +30,17 @@ export function FollowersList({ followers }: FollowersListProps) {
                 className="flex items-center gap-3 p-2 rounded-lg hover:bg-secondary/50 transition-colors cursor-pointer"
               >
                 <Avatar className="h-9 w-9">
-                  <AvatarImage src={follower.avatar} alt={follower.name} />
+                  <AvatarImage src={follower.profile_picture_url} alt={follower.username} />
                   <AvatarFallback className="bg-primary/10 text-primary text-sm">
-                    {follower.name.charAt(0)}
+                    {follower.username.charAt(0).toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
                 <div className="flex-1 min-w-0">
                   <p className="font-medium text-sm text-foreground truncate">
-                    {follower.name}
+                    {follower.username}
                   </p>
                   <p className="text-xs text-muted-foreground truncate">
-                    @{follower.username}
+                    @{follower.username.toLowerCase()}
                   </p>
                 </div>
               </div>
