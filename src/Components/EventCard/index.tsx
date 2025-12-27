@@ -104,3 +104,5 @@ export function EventCard({
     </Card>
   );
 }
+
+export default EventCard

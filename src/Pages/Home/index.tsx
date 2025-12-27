@@ -91,7 +91,7 @@ const Index: React.FC = () => {
               )}
               {!hasMore && events.length > 0 && (
                 <p className="text-sm text-muted-foreground">
-                  Você chegou ao fim do feed. ✨
+                  Você chegou ao fim do feed.
                 </p>
               )}
             </div>
