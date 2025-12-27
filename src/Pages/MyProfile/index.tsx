@@ -1,12 +1,7 @@
-import React from "react";
+import React, { useState, useEffect, useContext, useCallback } from "react";
 import axios from "axios";
-import { useState, useEffect, useContext, useCallback } from "react";
 import { AuthContext } from "../../Context/auth.context.tsx";
-import {
-  IProfileResponse,
-  FollowPayload,
-  IEventResponse,
-} from "../../types.ts";
+import { IProfileResponse, FollowPayload } from "../../types.ts";
 import FollowServices from "../../Services/follow.services.ts";
 import { Link, useParams } from "react-router-dom";
 
@@ -19,13 +14,27 @@ function ProfileDetailsPage() {
   const { username } = useParams();
   const { user } = useContext(AuthContext);
 
-  const profileId = profile?.id ? Number(profile.id) : undefined;
-  const userId = user?.userId ? Number(user.userId) : undefined;
-  const isCreator = profileId && userId && profileId === userId;
+  // 1. Definição clara dos IDs para evitar erros de tipo (string vs number)
+  const profileId = profile?.id ? Number(profile.id) : null;
+  const loggedInUserId = user?.userId ? Number(user.userId) : null;
 
-  const fetchFollowStatus = useCallback(async (followedId: number) => {
+  // Só é o criador se os IDs forem iguais e existirem
+  const isCreator = !!(
+    profileId &&
+    loggedInUserId &&
+    profileId === loggedInUserId
+  );
+
+  // LOGS DE DEBUG - Verifique-os no console do navegador (F12)
+  console.log("--- RENDER CHECK ---");
+  console.log("Profile ID:", profileId);
+  console.log("User Logado ID:", loggedInUserId);
+  console.log("isCreator?", isCreator);
+  console.log("isFollowing?", isFollowing);
+
+  const fetchFollowStatus = useCallback(async (targetId: number) => {
     try {
-      const response = await FollowServices.checkFollowStatus(followedId);
+      const response = await FollowServices.checkFollowStatus(targetId);
       setIsFollowing(response.data.isFollowing);
     } catch (error) {
       console.error("Erro ao verificar status de follow:", error);
@@ -34,20 +43,14 @@ function ProfileDetailsPage() {
   }, []);
 
   const handleFollowToggle = async () => {
-    if (!profile || !user) return;
+    if (!profileId) return;
 
-    const followedId = Number(profile.id);
-
-    if (isNaN(followedId)) {
-      console.error("ID do perfil para follow é inválido!");
-      return;
-    }
     try {
       if (isFollowing) {
-        await FollowServices.unfollow(followedId);
+        await FollowServices.unfollow(profileId);
         setIsFollowing(false);
       } else {
-        const payload: FollowPayload = { followed_id: followedId };
+        const payload: FollowPayload = { followed_id: profileId };
         await FollowServices.follow(payload);
         setIsFollowing(true);
       }
@@ -62,136 +65,131 @@ function ProfileDetailsPage() {
         const response = await axios.get<IProfileResponse>(
           `${API_URL}/api/profile/${username}`
         );
-
         const data = response.data;
         setProfile(data);
 
-        const eventsResponse = await axios.get(`${API_URL}/api/events/user/${data.id}`);
+        // Busca eventos associados a este perfil
+        const eventsResponse = await axios.get(
+          `${API_URL}/api/events/user/${data.id}`
+        );
         setEvents(eventsResponse.data);
 
-        const viewedProfileId = Number(data.id);
-        const loggedInUserId = user?.userId ? Number(user.userId) : undefined;
+        // Lógica de Follow: só checa se não for o próprio perfil
+        const viewedId = Number(data.id);
+        const currentId = user?.userId ? Number(user.userId) : null;
 
-        if (user && viewedProfileId && viewedProfileId !== loggedInUserId) {
-          fetchFollowStatus(viewedProfileId);
+        if (currentId && viewedId && viewedId !== currentId) {
+          fetchFollowStatus(viewedId);
         } else {
-          setIsFollowing(null);
+          setIsFollowing(null); // Esconde o botão se for o próprio dono
         }
       } catch (error) {
-        console.log(error);
+        console.error("Erro ao carregar dados da página:", error);
         setProfile(null);
       }
     };
 
-    fetchProfileData();
-  }, [username, user, fetchFollowStatus]);
+    if (username) fetchProfileData();
+  }, [username, user?.userId, fetchFollowStatus]);
 
   if (!profile) {
     return (
-      <div className="max-w-xl mx-auto bg-white shadow-2xl shadow-green-200/70 p-8 border-4 border-red-500">
-        {/* Spinner ou mensagem de carregamento aqui */}
-      </div>
+      <div className="p-20 text-center font-bold">Carregando perfil...</div>
     );
   }
 
-  const getInitials = (
-    firstName: string | null | undefined,
-    lastName: string | null | undefined
-  ) => {
-    const first = (firstName || "").trim().charAt(0).toUpperCase();
-    const last = (lastName || "").trim().charAt(0).toUpperCase();
-    return `${first}${last}`;
-  };
+  const getInitials = (first?: string, last?: string) =>
+    `${(first || "").charAt(0)}${(last || "").charAt(0)}`.toUpperCase();
 
-  const fullName = `${profile.first_name || profile.username || ""} ${
-    profile.last_name || ""
-  }`.trim();
-
-  if (profile && user) {
-    console.log("ID DO USUÁRIO LOGADO (AuthContext):", user.userId);
-    console.log("ID DO PERFIL SENDO VISTO (id):", profile.id);
-  }
+  const fullName =
+    `${profile.first_name || ""} ${profile.last_name || ""}`.trim() ||
+    profile.username;
 
   return (
-    <div className="min-h-screen bg-green-50 py-16 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-xl mx-auto bg-white rounded-3xl shadow-2xl shadow-green-200/70 overflow-hidden">
-        <div className="h-32 bg-teal-600/80 -mx-8 -mt-8 rounded-t-3xl"></div>
+    <div className="min-h-screen bg-green-50 py-16 px-4">
+      <div className="max-w-xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden">
+        {/* Header Decorativo */}
+        <div className="h-32 bg-teal-600/80"></div>
+
         <div className="p-8 relative">
+          {/* Foto de Perfil */}
           <div className="relative -mt-20 flex justify-center mb-6">
             {profile.profile_picture_url ? (
               <img
                 src={profile.profile_picture_url}
-                alt={`${profile.username}'s profile picture`}
+                alt="Profile"
                 className="w-24 h-24 object-cover rounded-full border-4 border-white shadow-lg ring-4 ring-emerald-500"
               />
             ) : (
-              <div className="w-24 h-24 flex items-center justify-center rounded-full bg-green-200 text-teal-700 text-3xl font-extrabold border-4 border-white shadow-lg ring-4 ring-emerald-500">
+              <div className="w-24 h-24 flex items-center justify-center rounded-full bg-green-200 text-teal-700 text-3xl font-black border-4 border-white shadow-lg ring-4 ring-emerald-500">
                 {getInitials(profile.first_name, profile.last_name)}
               </div>
             )}
           </div>
+
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-black text-gray-900 mb-0 leading-tight">
-              {fullName}
-            </h1>
+            <h1 className="text-3xl font-black text-gray-900">{fullName}</h1>
             <p className="text-xl text-emerald-600 font-semibold mt-1">
               @{profile.username}
             </p>
           </div>
-        </div>
 
-        {/* === AÇÕES/BOTÕES (Separados e estilizados) === */}
-        <div className="p-6 bg-gray-50 border-t border-gray-200 flex flex-col md:flex-row space-y-3 md:space-y-0 md:space-x-4">
-          {!isCreator && isFollowing !== null && (
-            <button
-              onClick={handleFollowToggle}
-              className={`w-full py-3 px-4 font-bold rounded-lg transition duration-300 shadow-md ${
-                isFollowing
-                  ? "bg-gray-400 hover:bg-gray-500 text-white shadow-gray-400/50"
-                  : "bg-emerald-600 hover:bg-emerald-700 text-white shadow-emerald-400/50"
-              }`}
-            >
-              {isFollowing ? "Seguindo" : "Seguir"}
-            </button>
-          )}
-          {isCreator && (
-            <Link to={`/profile/edit/${username}`} className="w-full">
-              <button className="w-full py-3 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg transition duration-300 shadow-md shadow-emerald-400/50">
-                Editar Perfil
+          {/* Seção de Botões */}
+          <div className="flex flex-col md:flex-row gap-4">
+            {/* Botão Seguir/Seguindo: Só aparece se NÃO for o dono e se soubermos o status */}
+            {!isCreator && isFollowing !== null && (
+              <button
+                onClick={handleFollowToggle}
+                className={`w-full py-3 px-4 font-bold rounded-lg transition duration-300 shadow-md ${
+                  isFollowing
+                    ? "bg-gray-400 hover:bg-gray-500 text-white"
+                    : "bg-emerald-600 hover:bg-emerald-700 text-white"
+                }`}
+              >
+                {isFollowing ? "Seguindo" : "Seguir"}
+              </button>
+            )}
+
+            {/* Botão Editar: Só aparece para o dono */}
+            {isCreator && (
+              <Link to={`/profile/edit/${username}`} className="w-full">
+                <button className="w-full py-3 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg shadow-md">
+                  Editar Perfil
+                </button>
+              </Link>
+            )}
+
+            <Link to="/profile" className="w-full">
+              <button className="w-full py-3 px-4 border border-gray-300 bg-white hover:bg-green-100 text-gray-700 font-bold rounded-lg transition shadow-sm">
+                Voltar
               </button>
             </Link>
-          )}
-
-          <Link to="/profile" className="w-full">
-            <button className="w-full py-3 px-4 border border-gray-300 bg-white hover:bg-green-100 text-gray-700 font-bold rounded-lg transition duration-300 shadow-sm">
-              Voltar
-            </button>
-          </Link>
+          </div>
         </div>
+
+        {/* Listagem de Eventos */}
         <div className="p-8 border-t border-gray-100">
-          <h2 className="text-2xl font-serif text-gray-800 mb-6">
+          <h2 className="text-2xl font-bold text-gray-800 mb-6">
             Eventos Criados
           </h2>
-
           {events.length > 0 ? (
             <div className="space-y-4">
               {events.map((event) => (
-                <div
+                <Link
                   key={event.id}
-                  className="p-4 border rounded-xl hover:bg-green-50 transition-colors"
+                  to={`/events/${event.id}`}
+                  className="block p-4 border rounded-xl hover:bg-green-50 transition-colors"
                 >
-                  <Link to={`/events/${event.id}`}>
-                    <h3 className="font-bold text-teal-700">{event.name}</h3>
-                    <p className="text-sm text-gray-500">
-                      {new Date(event.event_date).toLocaleDateString()}
-                    </p>
-                  </Link>
-                </div>
+                  <h3 className="font-bold text-teal-700">{event.name}</h3>
+                  <p className="text-sm text-gray-500">
+                    {new Date(event.event_date).toLocaleDateString()}
+                  </p>
+                </Link>
               ))}
             </div>
           ) : (
             <p className="text-gray-500 italic">
-              Este utilizador ainda não criou eventos.
+              Este usuário ainda não criou eventos.
             </p>
           )}
         </div>

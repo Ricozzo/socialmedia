@@ -8,15 +8,13 @@ import AddEvents from "./Pages/AddEvent/index.tsx";
 import DetailsEvent from "./Pages/Details/index.tsx";
 import UpdateEvent from "./Pages/EditEvent/index.tsx";
 import MyProfile from "./Pages/MyProfile/index.tsx";
+import HomePage from "./Pages/Home/index.jsx"
 
 function Navbar() {
   return <header>Barra de Navegação Aqui</header>;
 }
 function Footer() {
   return <footer>Rodapé da Aplicação</footer>;
-}
-function HomePage() {
-  return <h1>Página Inicial</h1>;
 }
 
 function App() {
