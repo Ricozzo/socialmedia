@@ -1,7 +1,8 @@
+import React from "react";
 import { Plus, Users } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Card, CardContent } from "../../Components/Ui/card";
+import { Button } from "../../Components/Ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "../../Components/Ui/avatar";
 import type { User } from "@/data/mockData";
 
 interface ProfileCardProps {

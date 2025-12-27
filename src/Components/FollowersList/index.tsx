@@ -1,6 +1,6 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { Card, CardContent, CardHeader, CardTitle } from "../../Components/Ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "../../Components/Ui/avatar";
+import { ScrollArea } from "../../Components/Ui/scroll-area";
 import type { User } from "@/data/mockData";
 
 interface FollowersListProps {

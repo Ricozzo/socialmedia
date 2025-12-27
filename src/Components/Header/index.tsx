@@ -1,6 +1,6 @@
 import { Search, Bell, Settings, Leaf } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { Input } from "../../Components/Ui/input";
+import { Button } from "../../Components/Ui/button";
 
 export function Header() {
   return (

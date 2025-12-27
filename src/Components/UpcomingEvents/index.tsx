@@ -1,6 +1,6 @@
 import { Calendar, User } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "../../Components/Ui/card";
+import { Badge } from "../../Components/Ui/badge";
 import type { UpcomingEvent } from "@/data/mockData";
 
 interface UpcomingEventsProps {
