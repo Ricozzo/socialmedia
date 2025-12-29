@@ -75,7 +75,7 @@ const Index: React.FC = () => {
   }, [hasMore, loading]);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-neutral-600">
       <Header />
 
       <main className="container px-4 py-6">
