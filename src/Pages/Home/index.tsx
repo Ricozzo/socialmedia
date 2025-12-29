@@ -28,7 +28,7 @@ const Index: React.FC = () => {
         setHasMore(false);
         return;
       }
-    
+
       const {
         events: newEvents,
         profile: userProfile,
@@ -38,7 +38,14 @@ const Index: React.FC = () => {
       if (!profile && userProfile) setProfile(userProfile);
       if (recentFollowers) setFollowers(recentFollowers);
 
-      setEvents((prev) => [...prev, ...newEvents]);
+      setEvents((prev) => {
+        const existingIds = new Set(prev.map((e) => e._id));
+        const uniqueNewEvents = newEvents.filter(
+          (e) => !existingIds.has(e._id)
+        );
+
+        return [...prev, ...uniqueNewEvents];
+      });
 
       if (newEvents.length < LIMIT) {
         setHasMore(false);
@@ -46,7 +53,6 @@ const Index: React.FC = () => {
     } catch (error) {
       console.error("Erro ao carregar o feed real:", error);
     } finally {
-      setHasMore(false);
       setLoading(false);
     }
   }, [offset, hasMore, loading, profile]);
