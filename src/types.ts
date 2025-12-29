@@ -73,6 +73,7 @@ export interface IEventDetail {
   event_time: string;
   address: string;
   location_optional: string;
+  event_photo_url: string;
 }
 
 export interface IEventResponse extends IEventDetail {
@@ -80,4 +81,5 @@ export interface IEventResponse extends IEventDetail {
   creator_id: number;
   created_at: string;
   updated_at: string;
+  event_photo_url: string;
 }

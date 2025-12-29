@@ -16,6 +16,7 @@ interface EventCardProps {
   description: string;
   event_date: string;
   address: string;
+  event_photo_url: string;
 }
 
 export function EventCard({
@@ -25,9 +26,10 @@ export function EventCard({
   description,
   event_date,
   address,
+  event_photo_url,
 }: EventCardProps) {
   return (
-    <Card className="overflow-hidden animate-fade-in border-border/50 shadow-sm hover:shadow-md transition-shadow">
+    <Card className="overflow-hidden animate-fade-in border-border/50 shadow-sm hover:shadow-md transition-shadow bg-gray-300">
       <CardContent className="p-0">
         {/* Header do Criador */}
         <div className="flex items-center gap-3 p-4">
@@ -45,8 +47,7 @@ export function EventCard({
         {/* Imagem do Evento */}
         <div className="relative aspect-[3/2] overflow-hidden">
           <img
-            src="https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=800&auto=format&fit=crop"
-            alt={name}
+            src={event_photo_url}
             className="h-full w-full object-cover transition-transform hover:scale-105"
           />
           <div className="absolute bottom-3 left-3 flex gap-2">
@@ -105,4 +106,4 @@ export function EventCard({
   );
 }
 
-export default EventCard
+export default EventCard;

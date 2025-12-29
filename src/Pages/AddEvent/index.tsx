@@ -11,7 +11,9 @@ function AddEvent(): JSX.Element {
     event_time: "",
     address: "",
     location_optional: "",
+    event_photo_url: "",
   });
+  const [fileToUpload, setFileToUpload] = useState<File | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | undefined>(
     undefined
   );
@@ -31,8 +33,23 @@ function AddEvent(): JSX.Element {
 
   const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>): void => {
     e.preventDefault();
+
+    const uploadData = new FormData();
+
+    Object.keys(eDetail).forEach((key) => {
+      if (key !== "event_photo_url" || eDetail[key as keyof IEventDetail]) {
+        uploadData.append(
+          key,
+          eDetail[key as keyof IEventDetail] as string | Blob
+        );
+      }
+    });
+
+    if (fileToUpload) {
+      uploadData.append("eventPicture", fileToUpload);
+    }
     eventService
-      .createEvent(eDetail)
+      .createEvent(uploadData)
       .then((response) => {
         navigate("/events");
       })
@@ -42,6 +59,16 @@ function AddEvent(): JSX.Element {
         setErrorMessage(errorDescription);
       });
   };
+  console.log("Aqui o handle submit", handleSubmit)
+  
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    if (e.target.files && e.target.files.length > 0) {
+      setFileToUpload(e.target.files[0]);
+    } else {
+      setFileToUpload(null);
+    }
+  };
+  console.log("Aqui o file change", handleFileChange)
 
   return (
     <div className="add-event">
@@ -95,6 +122,16 @@ function AddEvent(): JSX.Element {
             name="location_optional"
             value={eDetail.location_optional}
             onChange={handleEventChange}
+          />
+        </div>
+        <div>
+          <label>Imagem do Evento:</label>
+          <br />
+          <input
+            type="file"
+            name="eventPicture"
+            accept="image/*"
+            onChange={handleFileChange}
           />
         </div>
         {errorMessage && <p className="error-message">{errorMessage}</p>}

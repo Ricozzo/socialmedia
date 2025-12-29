@@ -24,14 +24,7 @@ function ProfileDetailsPage() {
     loggedInUserId &&
     profileId === loggedInUserId
   );
-
-  // LOGS DE DEBUG - Verifique-os no console do navegador (F12)
-  console.log("--- RENDER CHECK ---");
-  console.log("Profile ID:", profileId);
-  console.log("User Logado ID:", loggedInUserId);
-  console.log("isCreator?", isCreator);
-  console.log("isFollowing?", isFollowing);
-
+  
   const fetchFollowStatus = useCallback(async (targetId: number) => {
     try {
       const response = await FollowServices.checkFollowStatus(targetId);

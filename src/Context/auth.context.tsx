@@ -54,13 +54,9 @@ function AuthProviderWrapper({ children }: AuthProviderWrapperProps) {
             ...rawData,
             id: rawData.userId,
           } as IUser;
-          console.log("--- DADOS RECEBIDOS NA VERIFICAÇÃO ---");
-          console.log("RESPOSTA COMPLETA:", response.data);
-          console.log("ID LIDO:", response.data.userId);
-          console.log("---------------------------------------");
           setIsLoggedIn(true);
           setIsLoading(false);
-          setUser(userFromAPI); // 🎯 AGORA O USER ESTÁ SALVO!
+          setUser(userFromAPI);
         })
         .catch(() => {
           removeToken();
