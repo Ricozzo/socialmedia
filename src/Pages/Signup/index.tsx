@@ -116,12 +116,12 @@ function SignUpPage(): JSX.Element {
 
             <div>
               <label className="block text-xs uppercase tracking-widest font-bold text-[#6c562c] mb-1 ml-1">
-                Username
+                Nome de Utilizador
               </label>
               <input
                 type="text"
                 name="username"
-                placeholder="username"
+                placeholder="Nome de Utilizador"
                 className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-100 text-[#6c562c] focus:ring-2 focus:ring-[#8d984c] outline-none"
                 value={form.username}
                 onChange={handleForm}
