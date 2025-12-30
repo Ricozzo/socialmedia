@@ -24,24 +24,20 @@ function SignUpPage(): JSX.Element {
 
   const handleForm = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-
     setForm((prev) => ({
       ...prev,
-      [name]: name === "birthDate" ? String(value) : value,
+      [name]: value,
     }));
   };
 
-  const handleSignupSubmit = (e: React.ChangeEvent<HTMLFormElement>): void => {
+  const handleSignupSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-
     const uploadData = new FormData();
 
     Object.keys(form).forEach((key) => {
-      if (key !== "profilePictureUrl" || form[key as keyof ISignupPayload]) {
-        uploadData.append(
-          key,
-          form[key as keyof ISignupPayload] as string | Blob
-        );
+      const val = form[key as keyof ISignupPayload];
+      if (key !== "profilePictureUrl" || val) {
+        uploadData.append(key, val as string | Blob);
       }
     });
 
@@ -51,7 +47,7 @@ function SignUpPage(): JSX.Element {
 
     authService
       .signup(uploadData as unknown as ISignupPayload)
-      .then((response) => {
+      .then(() => {
         navigate("/auth/login");
       })
       .catch((error) => {
@@ -162,13 +158,14 @@ function SignUpPage(): JSX.Element {
               </div>
               <div>
                 <label className="block text-xs uppercase tracking-widest font-bold text-[#6c562c] mb-1 ml-1">
-                  Ano de Nascimento
+                  Data de Nascimento
                 </label>
                 <input
                   type="date"
                   name="birthDate"
-                  placeholder="dd/mm/aaaa"
-                  className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-100 text-[#6c562c] focus:ring-2 focus:ring-[#8d984c] outline-none"
+                  className={`w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-100 focus:ring-2 focus:ring-[#8d984c] outline-none ${
+                    form.birthDate ? "text-[#6c562c]" : "text-gray-400"
+                  }`}
                   value={form.birthDate}
                   onChange={handleForm}
                 />
