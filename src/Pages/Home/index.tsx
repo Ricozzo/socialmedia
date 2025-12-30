@@ -3,6 +3,7 @@ import { Header } from "../../Components/Header";
 import { EventCard } from "../../Components/EventCard";
 import { ProfileCard } from "../../Components/ProfileCard";
 import { FollowersList } from "../../Components/FollowersList";
+import { FollowingList } from "../../Components/FollowingList";
 import { UpcomingEvents } from "../../Components/UpcomingEvents";
 import feedService from "../../Services/home.services";
 import { IEventResponse, IUser } from "../../types";
@@ -10,7 +11,7 @@ import { IEventResponse, IUser } from "../../types";
 const Index: React.FC = () => {
   const [events, setEvents] = useState<IEventResponse[]>([]);
   const [profile, setProfile] = useState<IUser | null>(null);
-  const [followers, setFollowers] = useState<any[]>([]);
+  const [following, setFollowing] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [offset, setOffset] = useState<number>(0);
   const [hasMore, setHasMore] = useState<boolean>(true);
@@ -32,11 +33,11 @@ const Index: React.FC = () => {
       const {
         events: newEvents,
         profile: userProfile,
-        recentFollowers,
+        following: userFollowing,
       } = response.data;
 
       if (!profile && userProfile) setProfile(userProfile);
-      if (recentFollowers) setFollowers(recentFollowers);
+      if (userFollowing) setFollowing(userFollowing);
 
       setEvents((prev) => {
         const existingIds = new Set(prev.map((e) => e._id));
@@ -106,10 +107,10 @@ const Index: React.FC = () => {
           {/* Sidebar Direita */}
           <aside className="lg:col-span-5 xl:col-span-4 space-y-6">
             {profile && (
-              <ProfileCard user={profile} followersCount={followers.length} />
+              <ProfileCard user={profile} followersCount={following.length} />
             )}
 
-            <FollowersList followers={followers} />
+            <FollowingList following={following} />
 
             {/* Aqui você pode filtrar os eventos para mostrar apenas os "próximos" */}
             {/* <UpcomingEvents events={events.slice(0, 3)} /> */}

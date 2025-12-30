@@ -2,7 +2,7 @@ import React from "react";
 import { Search, Bell, Settings, Leaf } from "lucide-react";
 import { Input } from "../../Components/Ui/input";
 import { Button } from "../../Components/Ui/button";
-import logoKaax from "../../assets/kaax-w-bg.png";
+import logoKaax from "../../assets/logoKaax.png";
 
 export function Header() {
   return (
