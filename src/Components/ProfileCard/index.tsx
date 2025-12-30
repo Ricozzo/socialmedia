@@ -21,7 +21,7 @@ export function ProfileCard({ user, followersCount }: ProfileCardProps) {
     <Card className="border-border/50 shadow-sm bg-[#fdfcf8]">
       <CardContent className="p-6">
         <div className="flex flex-col items-center text-center space-y-4">
-          <Avatar className="h-20 w-20">
+          <Avatar className="h-20 w-20 ring-2 ring-[#8d984c]">
             <AvatarImage src={user.profile_picture_url} alt={user.username} />
             <AvatarFallback className="bg-primary text-primary-foreground text-2xl">
               {user.username?.charAt(0).toUpperCase()}

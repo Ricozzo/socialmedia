@@ -26,7 +26,7 @@ export function FollowingList({ following }: FollowingListProps) {
   return (
     <Card className="bg-[#fdfcf8] border-border/50 shadow-sm">
       <CardHeader className="pb-3">
-        <CardTitle className="text-2xl font-serif font-semibold text-[#6c562c] tracking-tight items-center">
+        <CardTitle className="text-2xl font-serif font-semibold text-[#6c562c]  tracking-tight items-center">
           Pessoas que você segue
         </CardTitle>
       </CardHeader>
@@ -38,7 +38,7 @@ export function FollowingList({ following }: FollowingListProps) {
                 key={following.id}
                 className="flex items-center gap-3 p-2 rounded-lg hover:bg-secondary/50 transition-colors cursor-pointer"
               >
-                <Avatar className="h-9 w-9">
+                <Avatar className="h-9 w-9 ring-2 ring-[#8d984c]">
                   <AvatarImage
                     src={following.profile_picture_url}
                     alt={following.username}

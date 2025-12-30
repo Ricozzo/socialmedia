@@ -33,7 +33,7 @@ export function EventCard({
       <CardContent className="p-0">
         {/* Header do Criador */}
         <div className="flex items-center gap-3 p-4">
-          <Avatar className="h-16 w-16">
+          <Avatar className="h-16 w-16 ring-2 ring-[#8d984c]">
             <AvatarImage src={profile_picture_url} alt={username} />
             <AvatarFallback className="bg-primary text-primary-foreground">
               U
@@ -45,7 +45,7 @@ export function EventCard({
         </div>
 
         {/* Imagem do Evento */}
-        <div className="relative aspect-[3/2] overflow-hidden">
+        <div className="relative aspect-[2/1] overflow-hidden">
           <img
             src={event_photo_url}
             className="h-full w-full object-cover transition-transform hover:scale-105"
