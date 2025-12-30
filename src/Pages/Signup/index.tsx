@@ -2,6 +2,7 @@ import React, { useState, ChangeEvent, FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import authService from "../../Services/auth.services";
 import { ISignupPayload } from "../../types";
+import logoKaaxDool from "../../assets/logoKaax.png";
 
 function SignUpPage(): JSX.Element {
   const [form, setForm] = useState<ISignupPayload>({
@@ -10,7 +11,7 @@ function SignUpPage(): JSX.Element {
     password: "",
     firstName: "",
     lastName: "",
-    birthYear: 2007,
+    birthDate: "",
     phone: "",
     profilePictureUrl: "",
   });
@@ -26,7 +27,7 @@ function SignUpPage(): JSX.Element {
 
     setForm((prev) => ({
       ...prev,
-      [name]: name === "birthYear" ? Number(value) : value,
+      [name]: name === "birthDate" ? String(value) : value,
     }));
   };
 
@@ -69,100 +70,167 @@ function SignUpPage(): JSX.Element {
   };
 
   return (
-    <div className="signup-page">
-      <h1>Se inscrever</h1>
+    <div className="flex min-h-screen w-full items-center bg-[#fdfcf8]">
+      <div className="flex w-full items-center justify-center p-4 lg:p-10">
+        <div className="w-full max-w-xl bg-white pt-2 pb-10 px-8 lg:px-12 rounded-[2.5rem] shadow-[0_20px_50px_rgba(141,152,76,0.15)] border border-[#8d984c]/10">
+          <div className="text-center">
+            <div className="flex justify-center -mt-20 -mb-16 overflow-hidden">
+              <img
+                src={logoKaaxDool}
+                className="h-64 w-auto object-contain"
+                alt="Logo Kaax Dool"
+              />
+            </div>
+            <h1 className="text-4xl font-serif font-bold text-[#6c562c] tracking-tight">
+              Kaax
+            </h1>
+            <p className="text-[#8d984c] font-medium mt-1 mb-8">
+              Crie sua conta e preserve o amanhã
+            </p>
+          </div>
+          <form onSubmit={handleSignupSubmit} className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs uppercase tracking-widest font-bold text-[#6c562c] mb-1 ml-1">
+                  Nome
+                </label>
+                <input
+                  type="text"
+                  name="firstName"
+                  placeholder="Primeiro Nome"
+                  className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-100 text-[#6c562c] focus:ring-2 focus:ring-[#8d984c] outline-none"
+                  value={form.firstName}
+                  onChange={handleForm}
+                />
+              </div>
+              <div>
+                <label className="block text-xs uppercase tracking-widest font-bold text-[#6c562c] mb-1 ml-1">
+                  Apelido
+                </label>
+                <input
+                  type="text"
+                  name="lastName"
+                  placeholder="Segundo Nome"
+                  className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-100 text-[#6c562c] focus:ring-2 focus:ring-[#8d984c] outline-none"
+                  value={form.lastName}
+                  onChange={handleForm}
+                />
+              </div>
+            </div>
 
-      <form onSubmit={handleSignupSubmit}>
-        <div>
-          <label>Email:</label>
-          <br />
-          <input
-            type="email"
-            name="email"
-            value={form.email}
-            onChange={handleForm}
-          />
-        </div>
-        <div>
-          <label>Senha:</label>
-          <br />
-          <input
-            type="password"
-            name="password"
-            value={form.password}
-            onChange={handleForm}
-          />
-        </div>
-        <div>
-          <label>Username:</label>
-          <br />
-          <input
-            type="text"
-            name="username"
-            value={form.username}
-            onChange={handleForm}
-          />
-        </div>
-        <div>
-          <label>Nome:</label>
-          <br />
-          <input
-            type="text"
-            name="firstName"
-            value={form.firstName}
-            onChange={handleForm}
-          />
-        </div>
-        <div>
-          <label>Apelido:</label>
-          <br />
-          <input
-            type="text"
-            name="lastName"
-            value={form.lastName}
-            onChange={handleForm}
-          />
-        </div>
-        <div>
-          <label>Ano de Nascimento:</label>
-          <br />
-          <input
-            type="number"
-            name="birthYear"
-            value={form.birthYear}
-            onChange={handleForm}
-          />
-        </div>
-        <div>
-          <label>Telefone:</label>
-          <br />
-          <input
-            type="text"
-            name="phone"
-            value={form.phone}
-            onChange={handleForm}
-          />
-        </div>
-        <div>
-          <label>Imagem de Perfil:</label>
-          <br />
-          <input
-            type="file"
-            name="profilePicture"
-            accept="image/*"
-            onChange={handleFileChange}
-          />
-        </div>
-        <div>
-          <button type="submit">Inscrever</button>
-        </div>
-      </form>
+            <div>
+              <label className="block text-xs uppercase tracking-widest font-bold text-[#6c562c] mb-1 ml-1">
+                Username
+              </label>
+              <input
+                type="text"
+                name="username"
+                placeholder="@exemplo"
+                className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-100 text-[#6c562c] focus:ring-2 focus:ring-[#8d984c] outline-none"
+                value={form.username}
+                onChange={handleForm}
+              />
+            </div>
 
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
+            <div>
+              <label className="block text-xs uppercase tracking-widest font-bold text-[#6c562c] mb-1 ml-1">
+                E-mail
+              </label>
+              <input
+                type="email"
+                name="email"
+                className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-100 text-[#6c562c] focus:ring-2 focus:ring-[#8d984c] outline-none"
+                placeholder="email@exemplo.com"
+                value={form.email}
+                onChange={handleForm}
+              />
+            </div>
 
-      <p>Já possui uma conta??</p>
-      <div className="buttonLogin">
-        <Link to={"/login"}> Iniciar sessão</Link>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs uppercase tracking-widest font-bold text-[#6c562c] mb-1 ml-1">
+                  Senha
+                </label>
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="********"
+                  className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-100 text-[#6c562c] focus:ring-2 focus:ring-[#8d984c] outline-none"
+                  value={form.password}
+                  onChange={handleForm}
+                />
+              </div>
+              <div>
+                <label className="block text-xs uppercase tracking-widest font-bold text-[#6c562c] mb-1 ml-1">
+                  Ano de Nascimento
+                </label>
+                <input
+                  type="date"
+                  name="birthDate"
+                  placeholder="dd/mm/aaaa"
+                  className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-100 text-[#6c562c] focus:ring-2 focus:ring-[#8d984c] outline-none"
+                  value={form.birthDate}
+                  onChange={handleForm}
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-xs uppercase tracking-widest font-bold text-[#6c562c] mb-1 ml-1">
+                Telefone
+              </label>
+              <input
+                type="text"
+                name="phone"
+                placeholder="Telefone"
+                className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-100 text-[#6c562c] focus:ring-2 focus:ring-[#8d984c] outline-none"
+                value={form.phone}
+                onChange={handleForm}
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs uppercase tracking-widest font-bold text-[#6c562c] mb-1 ml-1">
+                Imagem de Perfil
+              </label>
+              <input
+                type="file"
+                name="profilePicture"
+                className="w-full text-xs text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-[#8d984c]/10 file:text-[#8d984c] hover:file:bg-[#8d984c]/20"
+                accept="image/*"
+                onChange={handleFileChange}
+              />
+            </div>
+
+            <button
+              className="w-full bg-[#8d984c] hover:bg-[#6c562c] text-white font-bold py-4 rounded-2xl transition-all shadow-lg shadow-[#8d984c]/20 mt-4 uppercase tracking-widest text-sm"
+              type="submit"
+            >
+              Inscrever
+            </button>
+          </form>
+
+          {errorMessage && (
+            <p className="mt-4 text-red-500 text-center text-sm font-bold">
+              {errorMessage}
+            </p>
+          )}
+
+          {/* Rodapé da Box */}
+          <div className="mt-8 text-center border-t border-gray-100 pt-6">
+            <p className="text-gray-500 text-sm mb-2">Já possui uma conta?</p>
+            <Link
+              to={"/login"}
+              className="text-[#b59659] font-bold hover:text-[#bfa064] transition-colors underline underline-offset-8"
+            >
+              Iniciar sessão
+            </Link>
+            <p className="text-[10px] uppercase tracking-[0.4em] text-gray-400 mt-8">
+              Preservando o Amanhã
+            </p>
+          </div>
+        </div>{" "}
+        {/* Fim da DIV branca */}
       </div>
     </div>
   );

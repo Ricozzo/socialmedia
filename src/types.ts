@@ -4,7 +4,7 @@ export interface IUser {
   username: string;
   firstName: string;
   lastName: string;
-  birth_year: number;
+  birth_date: Date;
   phone_number: string;
   profilePictureUrl: string;
   created_at: string;
@@ -47,7 +47,7 @@ export interface ISignupPayload {
   username: string;
   firstName: string;
   lastName: string;
-  birthYear: number;
+  birthDate: string;
   phone: string;
   profilePictureUrl: string;
 }
