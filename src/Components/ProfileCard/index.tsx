@@ -18,10 +18,10 @@ interface ProfileCardProps {
 
 export function ProfileCard({ user, followersCount }: ProfileCardProps) {
   return (
-    <Card className="border-border/50 shadow-sm">
+    <Card className="border-border/50 shadow-sm bg-[#fdfcf8]">
       <CardContent className="p-6">
         <div className="flex flex-col items-center text-center space-y-4">
-          <Avatar className="h-20 w-20 ring-4 ring-primary/20">
+          <Avatar className="h-20 w-20">
             <AvatarImage src={user.profile_picture_url} alt={user.username} />
             <AvatarFallback className="bg-primary text-primary-foreground text-2xl">
               {user.username?.charAt(0).toUpperCase()}

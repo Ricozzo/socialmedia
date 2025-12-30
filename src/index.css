@@ -50,12 +50,12 @@ h2 {
   font-family: "regular";
 }
 
-h3 {
+/* h3 {
   font-size: 2.2em;
   line-height: 1.1;
-  color: white;
+  color: text-[#6c562c];
   font-style: italic;
-}
+} */
 
 p {
   margin-top: 50px;
@@ -229,7 +229,7 @@ button:focus-visible {
   color: white;
   height: 70px;
   padding: 0 20px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 5px rgba(128, 128, 128, 0.1);
   animation: gradientAnimation 10s ease infinite;
   /* background-color: transparent; */
 }

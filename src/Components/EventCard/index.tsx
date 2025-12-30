@@ -29,11 +29,11 @@ export function EventCard({
   event_photo_url,
 }: EventCardProps) {
   return (
-    <Card className="overflow-hidden animate-fade-in border-border/50 shadow-sm hover:shadow-md transition-shadow bg-gray-300">
+    <Card className="overflow-hidden animate-fade-in border-border/50 shadow-sm hover:shadow-md transition-shadow bg-[#fdfcf8]">
       <CardContent className="p-0">
         {/* Header do Criador */}
         <div className="flex items-center gap-3 p-4">
-          <Avatar className="h-10 w-10 ring-2 ring-primary/20">
+          <Avatar className="h-16 w-16">
             <AvatarImage src={profile_picture_url} alt={username} />
             <AvatarFallback className="bg-primary text-primary-foreground">
               U
@@ -94,9 +94,9 @@ export function EventCard({
             </div>
             <Button
               size="sm"
-              className="bg-primary hover:bg-primary/90 text-primary-foreground gap-1"
+              className="bg-[#8d984c] hover:bg-[#6c562c] text-primary-foreground gap-1"
             >
-              <Users className="h-4 w-4" />
+              <Users className="h-4 w-4 bg-[#8d984c] hover:bg-[#6c562c]" />
               Participar
             </Button>
           </div>

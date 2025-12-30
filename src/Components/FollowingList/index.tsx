@@ -24,9 +24,9 @@ interface FollowingListProps {
 
 export function FollowingList({ following }: FollowingListProps) {
   return (
-    <Card className="border-border/50 shadow-sm">
+    <Card className="bg-[#fdfcf8] border-border/50 shadow-sm">
       <CardHeader className="pb-3">
-        <CardTitle className="text-base font-semibold text-foreground">
+        <CardTitle className="text-2xl font-serif font-semibold text-[#6c562c] tracking-tight items-center">
           Pessoas que você segue
         </CardTitle>
       </CardHeader>

@@ -76,9 +76,9 @@ const Index: React.FC = () => {
   }, [hasMore, loading]);
 
   return (
-    <div className="min-h-screen bg-neutral-600">
+    <div className="min-h-screen bg-[#8d984c]">
       <Header />
-
+      
       <main className="container px-4 py-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Feed de Eventos - Centro */}

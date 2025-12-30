@@ -111,10 +111,10 @@ function ProfileDetailsPage() {
               <img
                 src={profile.profile_picture_url}
                 alt="Profile"
-                className="w-24 h-24 object-cover rounded-full border-4 border-white shadow-lg ring-4 ring-emerald-500"
+                className="w-24 h-24 object-cover rounded-full border-4 border-white shadow-lg"
               />
             ) : (
-              <div className="w-24 h-24 flex items-center justify-center rounded-full bg-green-200 text-teal-700 text-3xl font-black border-4 border-white shadow-lg ring-4 ring-emerald-500">
+              <div className="w-24 h-24 flex items-center justify-center rounded-full bg-green-200 text-teal-700 text-3xl font-black border-4 border-white shadow-lg ">
                 {getInitials(profile.first_name, profile.last_name)}
               </div>
             )}
