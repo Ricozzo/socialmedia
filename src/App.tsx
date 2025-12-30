@@ -10,10 +10,6 @@ import UpdateEvent from "./Pages/EditEvent/index.tsx";
 import MyProfile from "./Pages/MyProfile/index.tsx";
 import HomePage from "./Pages/Home/index.tsx"
 
-function Footer() {
-  return <footer>Rodapé da Aplicação</footer>;
-}
-
 function App() {
   return (
     <div className="App">
@@ -41,7 +37,6 @@ function App() {
         />
          
       </Routes>
-            <Footer />
     </div>
   );
 }
