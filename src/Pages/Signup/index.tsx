@@ -121,7 +121,7 @@ function SignUpPage(): JSX.Element {
               <input
                 type="text"
                 name="username"
-                placeholder="@exemplo"
+                placeholder="username"
                 className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-100 text-[#6c562c] focus:ring-2 focus:ring-[#8d984c] outline-none"
                 value={form.username}
                 onChange={handleForm}
@@ -212,8 +212,6 @@ function SignUpPage(): JSX.Element {
               {errorMessage}
             </p>
           )}
-
-          {/* Rodapé da Box */}
           <div className="mt-8 text-center border-t border-gray-100 pt-6">
             <p className="text-gray-500 text-sm mb-2">Já possui uma conta?</p>
             <Link
@@ -227,7 +225,6 @@ function SignUpPage(): JSX.Element {
             </p>
           </div>
         </div>{" "}
-        {/* Fim da DIV branca */}
       </div>
     </div>
   );
