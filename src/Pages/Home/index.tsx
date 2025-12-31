@@ -2,11 +2,10 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Header } from "../../Components/Header";
 import { EventCard } from "../../Components/EventCard";
 import { ProfileCard } from "../../Components/ProfileCard";
-import { FollowersList } from "../../Components/FollowersList";
 import { FollowingList } from "../../Components/FollowingList";
 import { UpcomingEvents } from "../../Components/UpcomingEvents";
 import feedService from "../../Services/home.services";
-import { IEventResponse, IUser } from "../../types";
+import { IUser } from "../../types";
 
 const Index: React.FC = () => {
   const [events, setEvents] = useState<any[]>([]);
@@ -78,7 +77,7 @@ const Index: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#fdfcf8]">
       <Header />
-      
+
       <main className="container px-4 py-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Feed de Eventos - Centro */}
@@ -107,14 +106,11 @@ const Index: React.FC = () => {
           {/* Sidebar Direita */}
           <aside className="lg:col-span-5 xl:col-span-4 space-y-6">
             {profile && (
-              <ProfileCard user={profile} followersCount={following.length} />
+              <ProfileCard user={profile} followingCount={following.length} />
             )}
 
             <FollowingList following={following} />
             <UpcomingEvents events={events} />
-
-            {/* Aqui você pode filtrar os eventos para mostrar apenas os "próximos" */}
-            {/* <UpcomingEvents events={events.slice(0, 3)} /> */}
           </aside>
         </div>
       </main>

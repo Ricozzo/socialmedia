@@ -38,7 +38,7 @@ export function UpcomingEvents({ events, currentUserId }: UpcomingEventsProps) {
           return (
             <div
               key={event.id}
-              className="p-3 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors cursor-pointer space-y-2"
+              className="p-3 rounded-lg bg-gray-50 hover:bg-gray-60 transition-colors cursor-pointer space-y-2"
             >
               <div className="flex items-start justify-between gap-2">
                 <h4 className="font-medium text-sm text-foreground leading-tight">

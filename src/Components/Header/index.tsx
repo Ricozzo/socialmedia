@@ -1,5 +1,5 @@
 import React from "react";
-import { Search, Bell, Settings } from "lucide-react";
+import { Bell, Settings } from "lucide-react";
 import { Input } from "../../Components/Ui/input";
 import { Button } from "../../Components/Ui/button";
 import logoKaax from "../../assets/logoKaax.png";

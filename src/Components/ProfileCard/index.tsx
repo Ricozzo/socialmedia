@@ -13,10 +13,10 @@ interface ProfileCardProps {
     username: string;
     profile_picture_url?: string;
   };
-  followersCount: number;
+  followingCount: number;
 }
 
-export function ProfileCard({ user, followersCount }: ProfileCardProps) {
+export function ProfileCard({ user, followingCount }: ProfileCardProps) {
   return (
     <div className="rounded-[0.50rem] shadow-[0_2px_10px_0px_rgba(141,152,76,0.1)]">
       <Card className="bg-[#fdfcf8] border-none shadow-none rounded-[0.50rem] overflow-visible">
@@ -41,7 +41,7 @@ export function ProfileCard({ user, followersCount }: ProfileCardProps) {
             <div className="flex items-center gap-1 text-muted-foreground">
               <Users className="h-4 w-4" />
               <span className="text-sm font-medium">
-                {followersCount} seguidores
+                {followingCount} Seguindo
               </span>
             </div>
 
