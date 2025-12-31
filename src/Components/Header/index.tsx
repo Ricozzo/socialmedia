@@ -7,8 +7,8 @@ import logoKaax from "../../assets/logoKaax.png";
 export function Header() {
   return (
     <header className="top-0 z-50 w-full border-b bg-[#fdfcf8] backdrop-blur supports-[backdrop-filter]:bg-card/60">
-      <div className="container flex h-16 items-center justify-between px-4">
-        <div className="flex items-center gap-2">
+      <div className="container flex h-16 items-center justify-between">
+        <div className="flex items-center">
           <div className="flex -mt-6 h-40 w-40 items-center justify-center">
             <img
               src={logoKaax}
@@ -23,10 +23,9 @@ export function Header() {
 
         <div className="hidden flex-1 max-w-md mx-8 md:block">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
               placeholder="Buscar eventos, pessoas..."
-              className="pl-10 bg-secondary border-0"
+              className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-100 text-[#6c562c] focus:ring-2 focus:ring-[#8d984c] outline-none"
             />
           </div>
         </div>
