@@ -16,6 +16,8 @@ interface Following {
   id: number | string;
   username: string;
   profile_picture_url?: string;
+  first_name: string;
+  last_name: string
 }
 
 interface FollowingListProps {
@@ -49,7 +51,7 @@ export function FollowingList({ following }: FollowingListProps) {
                 </Avatar>
                 <div className="flex-1 min-w-0">
                   <p className="font-medium text-sm text-foreground truncate">
-                    {following.username}
+                    {following.first_name + " " + following.last_name}
                   </p>
                   <p className="text-xs text-muted-foreground truncate">
                     @{following.username.toLowerCase()}
