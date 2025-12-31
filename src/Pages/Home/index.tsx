@@ -9,7 +9,7 @@ import feedService from "../../Services/home.services";
 import { IEventResponse, IUser } from "../../types";
 
 const Index: React.FC = () => {
-  const [events, setEvents] = useState<IEventResponse[]>([]);
+  const [events, setEvents] = useState<any[]>([]);
   const [profile, setProfile] = useState<IUser | null>(null);
   const [following, setFollowing] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -111,6 +111,7 @@ const Index: React.FC = () => {
             )}
 
             <FollowingList following={following} />
+            <UpcomingEvents events={events} />
 
             {/* Aqui você pode filtrar os eventos para mostrar apenas os "próximos" */}
             {/* <UpcomingEvents events={events.slice(0, 3)} /> */}
