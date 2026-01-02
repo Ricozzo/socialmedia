@@ -98,7 +98,7 @@ export function EventCard({
             </div>
             
             <Button
-              className="bg-[#8d984c] hover:bg-[#6c562c] text-white rounded-full px-8 py-5 shadow-lg shadow-[#8d984c]/20 transition-all hover:-translate-y-0.5 active:translate-y-0 active:scale-95"
+              className="bg-[#8d984c] hover:bg-[#6c562c] text-white rounded-full shadow-lg shadow-[#8d984c]/20 transition-all hover:-translate-y-0.5 active:translate-y-0 active:scale-95"
             >
               <Users className="h-4 w-4 mr-2" />
               <span className="font-bold">Participar</span>
