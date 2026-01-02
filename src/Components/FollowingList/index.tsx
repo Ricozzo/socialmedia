@@ -17,7 +17,7 @@ interface Following {
   username: string;
   profile_picture_url?: string;
   first_name: string;
-  last_name: string
+  last_name: string;
 }
 
 interface FollowingListProps {
@@ -26,37 +26,42 @@ interface FollowingListProps {
 
 export function FollowingList({ following }: FollowingListProps) {
   return (
-    <Card className="bg-[#fdfcf8] border-border/50 shadow-sm">
-      <CardHeader className="pb-3">
-        <CardTitle className="text-1xl font-semibold text-[#6c562c]  tracking-tight items-center">
+    <Card className="bg-[#fdfcf8] border-none shadow-[0_4px_20px_rgba(141,152,76,0.1)] rounded-[2rem] overflow-hidden">
+      <CardHeader className="pb-4 pt-6 px-6">
+        <CardTitle className="text-lg font-serif font-bold text-[#6c562c] tracking-tight">
           Pessoas que você segue
         </CardTitle>
       </CardHeader>
+
       <CardContent className="p-0">
-        <ScrollArea className="h-[280px]">
-          <div className="space-y-1 px-4 pb-4">
-            {following.map((following) => (
+        <ScrollArea className="h-[320px]">
+          <div className="space-y-1 px-4 pb-6">
+            {following.map((user) => (
               <div
-                key={following.id}
-                className="flex items-center gap-3 p-2 rounded-lg hover:bg-secondary/50 transition-colors cursor-pointer"
+                key={user.id}
+                className="flex items-center gap-3 p-3 rounded-2xl hover:bg-[#8d984c]/5 transition-all duration-200 cursor-pointer group"
               >
-                <Avatar className="h-9 w-9 ring-2 ring-[#8d984c]">
+                <Avatar className="h-10 w-10 ring-2 ring-[#8d984c]/30 group-hover:ring-[#8d984c] transition-all">
                   <AvatarImage
-                    src={following.profile_picture_url}
-                    alt={following.username}
+                    src={user.profile_picture_url}
+                    alt={user.username}
+                    className="object-cover"
                   />
-                  <AvatarFallback className="bg-primary/10 text-primary text-sm">
-                    {following.username.charAt(0).toUpperCase()}
+                  <AvatarFallback className="bg-[#8d984c]/10 text-[#8d984c] text-xs font-bold">
+                    {user.username.charAt(0).toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
+
                 <div className="flex-1 min-w-0">
-                  <p className="font-medium text-sm text-foreground truncate">
-                    {following.first_name + " " + following.last_name}
+                  <p className="font-bold text-sm text-[#6c562c] truncate group-hover:text-[#8d984c] transition-colors">
+                    {`${user.first_name} ${user.last_name}`}
                   </p>
-                  <p className="text-xs text-muted-foreground truncate">
-                    @{following.username.toLowerCase()}
+                  <p className="text-xs text-[#8d984c]/70 italic truncate">
+                    @{user.username.toLowerCase()}
                   </p>
                 </div>
+
+                <div className="h-2 w-2 rounded-full bg-[#8d984c]/20 group-hover:bg-[#8d984c] transition-all" />
               </div>
             ))}
           </div>

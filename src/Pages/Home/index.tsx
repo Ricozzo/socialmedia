@@ -6,6 +6,7 @@ import { FollowingList } from "../../Components/FollowingList";
 import { UpcomingEvents } from "../../Components/UpcomingEvents";
 import feedService from "../../Services/home.services";
 import { IUser } from "../../types";
+import { Loader2 } from "lucide-react";
 
 const Index: React.FC = () => {
   const [events, setEvents] = useState<any[]>([]);
@@ -24,7 +25,12 @@ const Index: React.FC = () => {
     setLoading(true);
     try {
       const response = await feedService.getFeedData(LIMIT, offset);
-      if (!response.data || response.data.events.length === 0) {
+
+      if (
+        !response.data ||
+        !response.data.events ||
+        response.data.events.length === 0
+      ) {
         setHasMore(false);
         return;
       }
@@ -41,9 +47,8 @@ const Index: React.FC = () => {
       setEvents((prev) => {
         const existingIds = new Set(prev.map((e) => e._id));
         const uniqueNewEvents = newEvents.filter(
-          (e) => !existingIds.has(e._id)
+          (e: any) => !existingIds.has(e._id)
         );
-
         return [...prev, ...uniqueNewEvents];
       });
 
@@ -51,7 +56,7 @@ const Index: React.FC = () => {
         setHasMore(false);
       }
     } catch (error) {
-      console.error("Erro ao carregar o feed real:", error);
+      console.error("Erro ao carregar o feed:", error);
     } finally {
       setLoading(false);
     }
@@ -70,6 +75,7 @@ const Index: React.FC = () => {
       },
       { threshold: 0.1 }
     );
+
     if (loaderRef.current) observer.observe(loaderRef.current);
     return () => observer.disconnect();
   }, [hasMore, loading]);
@@ -78,39 +84,95 @@ const Index: React.FC = () => {
     <div className="min-h-screen bg-[#fdfcf8]">
       <Header />
 
-      <main className="container px-4 py-6">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          {/* Feed de Eventos - Centro */}
-          <section className="lg:col-span-7 xl:col-span-8 space-y-6">
-            <h1 className="sr-only">Feed de Eventos Kaax</h1>
+      <main className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          <section className="lg:col-span-7 xl:col-span-8 space-y-8 order-2 lg:order-1">
+            <div className="flex items-center gap-2 px-2">
+              <h2 className="font-serif text-xl font-bold text-[#6c562c]">
+                Explorar Eventos
+              </h2>
+            </div>
 
-            {events.map((event, index) => (
-              <EventCard key={`${event._id}-${index}`} {...event} />
-            ))}
+            <div className="flex flex-col gap-8">
+              {events.map((event, index) => (
+                <div
+                  key={`${event._id}-${index}`}
+                  className="animate-in fade-in slide-in-from-bottom-6 duration-700 ease-out"
+                  style={{ animationDelay: `${(index % 3) * 150}ms` }}
+                >
+                  <EventCard {...event} />
+                </div>
+              ))}
+            </div>
 
-            {/* Sentinela do Scroll */}
-            <div ref={loaderRef} className="py-4 text-center">
+            <div
+              ref={loaderRef}
+              className="py-16 flex flex-col items-center justify-center gap-4"
+            >
               {loading && (
-                <p className="text-sm animate-pulse">
-                  Carregando mais eventos...
-                </p>
+                <div className="flex flex-col items-center gap-3">
+                  <Loader2 className="h-8 w-8 animate-spin text-[#8d984c] opacity-60" />
+                  <p className="text-sm font-medium text-[#8d984c]/70 italic">
+                    Cultivando mais conteúdo...
+                  </p>
+                </div>
               )}
+
               {!hasMore && events.length > 0 && (
-                <p className="text-sm text-muted-foreground">
-                  Você chegou ao fim do feed.
-                </p>
+                <div className="text-center space-y-4 w-full">
+                  <div className="h-px w-24 bg-[#8d984c]/20 mx-auto" />
+                  <p className="font-serif italic text-[#8d984c]/60">
+                    Você chegou ao fim da sua jornada por hoje.
+                  </p>
+                </div>
+              )}
+
+              {events.length === 0 && !loading && (
+                <div className="text-center py-20 bg-white/50 rounded-[2rem] border-2 border-dashed border-[#8d984c]/20 w-full">
+                  <p className="text-[#6c562c] font-medium">
+                    Nenhum evento encontrado no momento.
+                  </p>
+                </div>
               )}
             </div>
           </section>
 
-          {/* Sidebar Direita */}
-          <aside className="lg:col-span-5 xl:col-span-4 space-y-6">
-            {profile && (
-              <ProfileCard user={profile} followingCount={following.length} />
+          <aside className="lg:col-span-5 xl:col-span-4 space-y-8 lg:sticky lg:top-24 order-1 lg:order-2">
+            {profile ? (
+              <div className="animate-in fade-in slide-in-from-right-8 duration-700">
+                <ProfileCard user={profile} followingCount={following.length} />
+              </div>
+            ) : (
+              <div className="h-48 w-full bg-[#8d984c]/5 animate-pulse rounded-[2rem]" />
             )}
 
-            <FollowingList following={following} />
-            <UpcomingEvents events={events} />
+            <div className="animate-in fade-in slide-in-from-right-8 duration-700 delay-200">
+              <FollowingList following={following} />
+            </div>
+
+            <div className="animate-in fade-in slide-in-from-right-8 duration-700 delay-400">
+              <UpcomingEvents
+                events={events.slice(0, 3)}
+                currentUserId={profile?._id || ""}
+              />
+            </div>
+
+            <div className="pt-4 px-6">
+              <div className="flex flex-wrap gap-x-4 gap-y-2 text-[10px] font-bold uppercase tracking-widest text-[#8d984c]/50">
+                <span className="hover:text-[#8d984c] cursor-pointer transition-colors">
+                  Privacidade
+                </span>
+                <span className="hover:text-[#8d984c] cursor-pointer transition-colors">
+                  Termos
+                </span>
+                <span className="hover:text-[#8d984c] cursor-pointer transition-colors">
+                  Ajuda
+                </span>
+              </div>
+              <p className="mt-4 text-[10px] text-[#8d984c]/30 font-bold uppercase tracking-[0.2em]">
+                © 2026 Kaax
+              </p>
+            </div>
           </aside>
         </div>
       </main>

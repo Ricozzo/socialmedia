@@ -29,75 +29,79 @@ export function EventCard({
   event_photo_url,
 }: EventCardProps) {
   return (
-    <Card className="overflow-hidden animate-fade-in border-border/50 shadow-sm hover:shadow-md transition-shadow bg-[#fdfcf8]">
+    <Card className="group overflow-hidden border-none shadow-[0_4px_20px_rgba(141,152,76,0.12)] rounded-[2.5rem] bg-[#fdfcf8] transition-all duration-500 hover:shadow-[0_12px_40px_rgba(141,152,76,0.18)]">
       <CardContent className="p-0">
-        {/* Header do Criador */}
-        <div className="flex items-center gap-3 p-4">
-          <Avatar className="h-16 w-16 ring-2 ring-[#8d984c]">
-            <AvatarImage src={profile_picture_url} alt={username} />
-            <AvatarFallback className="bg-primary text-primary-foreground">
-              U
+        <div className="flex items-center gap-3 p-5">
+          <Avatar className="h-12 w-12 ring-2 ring-[#8d984c] ring-offset-2 ring-offset-[#fdfcf8] shadow-sm">
+            <AvatarImage src={profile_picture_url} alt={username} className="object-cover" />
+            <AvatarFallback className="bg-[#8d984c] text-white font-bold">
+              {username?.charAt(0).toUpperCase()}
             </AvatarFallback>
           </Avatar>
-          <div className="flex-1">
-            <p className="font-semibold text-foreground">@{username}</p>
+          <div className="flex flex-col">
+            <p className="font-bold text-[#6c562c] leading-none tracking-tight">
+              @{username.toLowerCase()}
+            </p>
+            <span className="text-[10px] text-[#8d984c] font-bold uppercase tracking-widest mt-1 opacity-70">
+              Organizador
+            </span>
           </div>
         </div>
 
-        {/* Imagem do Evento */}
-        <div className="relative aspect-[2/1] overflow-hidden">
-          <img
-            src={event_photo_url}
-            className="h-full w-full object-cover transition-transform hover:scale-105"
-          />
-          <div className="absolute bottom-3 left-3 flex gap-2">
-            <Badge
-              variant="secondary"
-              className="bg-card/90 backdrop-blur text-foreground"
-            >
-              <Calendar className="mr-1 h-3 w-3" />
-              {event_date}
-            </Badge>
-            <Badge
-              variant="secondary"
-              className="bg-card/90 backdrop-blur text-foreground"
-            >
-              <MapPin className="mr-1 h-3 w-3" />
-              {address}
-            </Badge>
+        <div className="px-5">
+          <div className="relative aspect-[16/9] overflow-hidden rounded-[2rem] shadow-md">
+            <img
+              src={event_photo_url}
+              alt={name}
+              className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+            />
+            
+            <div className="absolute bottom-4 left-4 flex flex-wrap gap-2">
+              <Badge className="bg-[#fdfcf8]/90 backdrop-blur-md text-[#6c562c] border-none px-3 py-1.5 rounded-full shadow-sm">
+                <Calendar className="mr-1.5 h-3.5 w-3.5 text-[#8d984c]" />
+                <span className="text-xs font-bold">{event_date}</span>
+              </Badge>
+              <Badge className="bg-[#fdfcf8]/90 backdrop-blur-md text-[#6c562c] border-none px-3 py-1.5 rounded-full shadow-sm">
+                <MapPin className="mr-1.5 h-3.5 w-3.5 text-[#8d984c]" />
+                <span className="text-xs font-bold truncate max-w-[140px]">{address}</span>
+              </Badge>
+            </div>
           </div>
         </div>
+        <div className="p-6 space-y-4">
+          <div className="space-y-2">
+            <h3 className="font-serif text-2xl font-bold text-[#6c562c] leading-tight transition-colors group-hover:text-[#8d984c]">
+              {name}
+            </h3>
+            <p className="text-[#8d984c]/90 text-sm leading-relaxed line-clamp-3 font-medium">
+              {description}
+            </p>
+          </div>
 
-        <div className="p-4 space-y-3">
-          <h3 className="font-bold text-lg text-foreground">{name}</h3>
-          <p className="text-muted-foreground text-sm leading-relaxed">
-            {description}
-          </p>
-
-          <div className="flex items-center justify-between pt-2 border-t border-border">
-            <div className="flex items-center gap-4">
+          <div className="flex items-center justify-between pt-5 border-t border-[#8d984c]/10">
+            <div className="flex items-center gap-1">
               <Button
                 variant="ghost"
                 size="sm"
-                className="text-muted-foreground hover:text-primary gap-1"
+                className="text-[#8d984c] hover:bg-[#8d984c]/10 hover:text-[#6c562c] rounded-full px-3 transition-all"
               >
-                <Heart className="h-4 w-4" />
-                <span className="text-sm">0</span>
+                <Heart className="h-5 w-5 mr-1.5 transition-transform active:scale-150" />
+                <span className="font-bold text-sm">0</span>
               </Button>
               <Button
                 variant="ghost"
                 size="sm"
-                className="text-muted-foreground hover:text-primary gap-1"
+                className="text-[#8d984c] hover:bg-[#8d984c]/10 rounded-full px-3"
               >
-                <Share2 className="h-4 w-4" />
+                <Share2 className="h-5 w-5" />
               </Button>
             </div>
+            
             <Button
-              size="sm"
-              className="bg-[#8d984c] hover:bg-[#6c562c] text-primary-foreground gap-1"
+              className="bg-[#8d984c] hover:bg-[#6c562c] text-white rounded-full px-8 py-5 shadow-lg shadow-[#8d984c]/20 transition-all hover:-translate-y-0.5 active:translate-y-0 active:scale-95"
             >
-              <Users className="h-4 w-4 bg-[#8d984c] hover:bg-[#6c562c]" />
-              Participar
+              <Users className="h-4 w-4 mr-2" />
+              <span className="font-bold">Participar</span>
             </Button>
           </div>
         </div>
