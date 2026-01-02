@@ -1,5 +1,6 @@
 import React from "react";
 import { Bell, Settings } from "lucide-react";
+import { Link } from "react-router-dom";
 import { Input } from "../../Components/Ui/input";
 import { Button } from "../../Components/Ui/button";
 import logoKaax from "../../assets/logoKaax.png";
@@ -16,9 +17,12 @@ export function Header() {
               alt="Kaax Logo"
             />
           </div>
-          <span className="text-4xl font-serif font-bold text-[#6c562c] tracking-tight">
+          <Link
+            to={"/"}
+            className="text-4xl font-serif font-bold text-[#6c562c] tracking-tight"
+          >
             Kaax
-          </span>
+          </Link>
         </div>
 
         <div className="hidden flex-1 max-w-md mx-8 md:block">

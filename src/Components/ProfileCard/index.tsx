@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { Plus, Users } from "lucide-react";
 import { Card, CardContent } from "../../Components/Ui/card";
 import { Button } from "../../Components/Ui/button";
@@ -46,10 +47,12 @@ export function ProfileCard({ user, followingCount }: ProfileCardProps) {
             </div>
 
             <div className="w-full space-y-2">
-              <Button className="w-full bg-[#8d984c] hover:bg-[#6c562c] text-primary-foreground gap-2">
-                <Plus className="h-4 w-4" />
-                Criar Evento
-              </Button>
+              <Link to={"/events"}>
+                <Button className="w-full bg-[#8d984c] hover:bg-[#6c562c] text-primary-foreground gap-2">
+                  <Plus className="h-4 w-4" />
+                  Criar Evento
+                </Button>
+              </Link>
               <Button variant="outline" className="w-full gap-2">
                 <Users className="h-4 w-4" />
                 Ver Seguidores
