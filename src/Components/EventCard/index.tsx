@@ -48,8 +48,8 @@ export function EventCard({
           </div>
         </div>
 
-        <div className="px-5">
-          <div className="relative aspect-[16/9] overflow-hidden rounded-[2rem] shadow-md">
+        <div>
+          <div className="relative aspect-[16/9] overflow-hidden shadow-md">
             <img
               src={event_photo_url}
               alt={name}
