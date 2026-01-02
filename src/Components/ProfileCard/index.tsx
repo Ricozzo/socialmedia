@@ -11,6 +11,7 @@ import {
 
 interface ProfileCardProps {
   user: {
+    first_name: string;
     username: string;
     profile_picture_url?: string;
   };
@@ -33,7 +34,7 @@ export function ProfileCard({ user, followingCount }: ProfileCardProps) {
 
             <div className="space-y-1 mb-4">
               <h2 className="font-serif text-2xl font-bold text-[#6c562c] tracking-tight">
-                {user.username}
+                {user.first_name}
               </h2>
               <p className="text-sm font-medium text-[#8d984c]/80 italic">
                 @{user.username.toLowerCase()}
