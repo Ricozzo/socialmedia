@@ -48,7 +48,7 @@ function SignUpPage(): JSX.Element {
     authService
       .signup(uploadData as unknown as ISignupPayload)
       .then(() => {
-        navigate("/auth/login");
+        navigate("/login");
       })
       .catch((error) => {
         const errorDescription =

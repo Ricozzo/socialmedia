@@ -29,11 +29,11 @@ class AuthService {
   public signup = (
     requestBody: ISignupPayload
   ): Promise<AxiosResponse<ILoginResponse>> => {
-    return this.api.post<ILoginResponse>("/api/signup", requestBody);
+    return this.api.post<ILoginResponse>("/api/auth/signup", requestBody);
   };
 
   public verify = (): Promise<AxiosResponse<IUser>> => {
-    return this.api.get<IUser>("/api/verify");
+    return this.api.get<IUser>("/api/auth/verify");
   };
 }
 
