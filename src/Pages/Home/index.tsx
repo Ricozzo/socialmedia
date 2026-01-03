@@ -5,6 +5,7 @@ import { ProfileCard } from "../../Components/ProfileCard";
 import { FollowingList } from "../../Components/FollowingList";
 import { UpcomingEvents } from "../../Components/UpcomingEvents";
 import feedService from "../../Services/home.services";
+import { useNavigate } from "react-router-dom";
 import { IUser } from "../../types";
 import { Loader2 } from "lucide-react";
 
@@ -18,6 +19,15 @@ const Index: React.FC = () => {
 
   const loaderRef = useRef<HTMLDivElement | null>(null);
   const LIMIT = 10;
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+    }
+  }, [navigate]);
 
   const loadFeed = useCallback(async () => {
     if (loading || !hasMore) return;
