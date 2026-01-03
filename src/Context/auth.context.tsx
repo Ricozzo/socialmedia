@@ -52,7 +52,7 @@ function AuthProviderWrapper({ children }: AuthProviderWrapperProps) {
 
           const userFromAPI: IUser = {
             ...rawData,
-            id: rawData.userId,
+            id: rawData.id,
           } as IUser;
           setIsLoggedIn(true);
           setIsLoading(false);

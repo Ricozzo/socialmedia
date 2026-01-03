@@ -17,7 +17,7 @@ function ProfileDetailsPage() {
 
   // 1. Definição clara dos IDs para evitar erros de tipo (string vs number)
   const profileId = profile?.id ? Number(profile.id) : null;
-  const loggedInUserId = user?.userId ? Number(user.userId) : null;
+  const loggedInUserId = user?.id ? Number(user.id) : null;
 
   // Só é o criador se os IDs forem iguais e existirem
   const isCreator = !!(
@@ -70,7 +70,7 @@ function ProfileDetailsPage() {
 
         // Lógica de Follow: só checa se não for o próprio perfil
         const viewedId = Number(data.id);
-        const currentId = user?.userId ? Number(user.userId) : null;
+        const currentId = user?.id ? Number(user.id) : null;
 
         if (currentId && viewedId && viewedId !== currentId) {
           fetchFollowStatus(viewedId);
@@ -84,7 +84,7 @@ function ProfileDetailsPage() {
     };
 
     if (username) fetchProfileData();
-  }, [username, user?.userId, fetchFollowStatus]);
+  }, [username, user?.id, fetchFollowStatus]);
 
   if (!profile) {
     return (
