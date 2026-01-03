@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import {
   Card,
   CardContent,
@@ -37,8 +38,9 @@ export function FollowingList({ following }: FollowingListProps) {
         <ScrollArea className="h-[320px]">
           <div className="space-y-1 px-4 pb-6">
             {following.map((user) => (
-              <div
+              <Link
                 key={user.id}
+                to={`/profile/${user.username}`}
                 className="flex items-center gap-3 p-3 rounded-2xl hover:bg-[#8d984c]/5 transition-all duration-200 cursor-pointer group"
               >
                 <Avatar className="h-10 w-10 ring-2 ring-[#8d984c]/30 group-hover:ring-[#8d984c] transition-all">
@@ -51,7 +53,6 @@ export function FollowingList({ following }: FollowingListProps) {
                     {user.username.charAt(0).toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
-
                 <div className="flex-1 min-w-0">
                   <p className="font-bold text-sm text-[#6c562c] truncate group-hover:text-[#8d984c] transition-colors">
                     {`${user.first_name} ${user.last_name}`}
@@ -62,7 +63,7 @@ export function FollowingList({ following }: FollowingListProps) {
                 </div>
 
                 <div className="h-2 w-2 rounded-full bg-[#8d984c]/20 group-hover:bg-[#8d984c] transition-all" />
-              </div>
+              </Link>
             ))}
           </div>
         </ScrollArea>
