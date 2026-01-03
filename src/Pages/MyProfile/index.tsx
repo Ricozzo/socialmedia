@@ -1,29 +1,39 @@
-import React, { useState, useEffect, useContext, useCallback } from "react";
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  useContext,
+  useCallback,
+} from "react";
 import axios from "axios";
 import { AuthContext } from "../../Context/auth.context.tsx";
-import { IProfileResponse, FollowPayload } from "../../types.ts";
+import { IProfileResponse } from "../../types.ts";
 import FollowServices from "../../Services/follow.services.ts";
+import feedService from "../../Services/home.services";
 import { Header } from "../../Components/Header";
+import { FollowingList } from "../../Components/FollowingList";
+import { UpcomingEvents } from "../../Components/UpcomingEvents";
+import { EventCard } from "../../Components/EventCard";
 import { Link, useParams } from "react-router-dom";
+import { Loader2, ArrowLeft, Edit3, UserPlus, UserMinus } from "lucide-react";
+import { Button } from "../../Components/Ui/button";
 
 const API_URL = import.meta.env.VITE_API_SERVER_URL;
 
 function ProfileDetailsPage() {
   const [profile, setProfile] = useState<IProfileResponse | null>(null);
   const [isFollowing, setIsFollowing] = useState<boolean | null>(null);
+  const [following, setFollowing] = useState<any[]>([]);
   const [events, setEvents] = useState<any[]>([]);
+
   const { username } = useParams();
-  const { user } = useContext(AuthContext);
+  const { user: loggedInUser } = useContext(AuthContext);
+  const LIMIT = 10;
 
-  // 1. Definição clara dos IDs para evitar erros de tipo (string vs number)
-  const profileId = profile?.id ? Number(profile.id) : null;
-  const loggedInUserId = user?.id ? Number(user.id) : null;
-
-  // Só é o criador se os IDs forem iguais e existirem
   const isCreator = !!(
-    profileId &&
-    loggedInUserId &&
-    profileId === loggedInUserId
+    profile?.id &&
+    loggedInUser?.id &&
+    Number(profile.id) === Number(loggedInUser.id)
   );
 
   const fetchFollowStatus = useCallback(async (targetId: number) => {
@@ -31,27 +41,18 @@ function ProfileDetailsPage() {
       const response = await FollowServices.checkFollowStatus(targetId);
       setIsFollowing(response.data.isFollowing);
     } catch (error) {
-      console.error("Erro ao verificar status de follow:", error);
       setIsFollowing(false);
     }
   }, []);
 
-  const handleFollowToggle = async () => {
-    if (!profileId) return;
-
+  const loadFeedSidebar = useCallback(async () => {
     try {
-      if (isFollowing) {
-        await FollowServices.unfollow(profileId);
-        setIsFollowing(false);
-      } else {
-        const payload: FollowPayload = { followed_id: profileId };
-        await FollowServices.follow(payload);
-        setIsFollowing(true);
-      }
+      const response = await feedService.getFeedData(LIMIT, 0);
+      if (response.data?.following) setFollowing(response.data.following);
     } catch (error) {
-      console.error("Erro na ação de follow:", error);
+      console.error("Erro sidebar:", error);
     }
-  };
+  }, []);
 
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -59,138 +60,199 @@ function ProfileDetailsPage() {
         const response = await axios.get<IProfileResponse>(
           `${API_URL}/api/profile/${username}`
         );
-        const data = response.data;
-        setProfile(data);
+        setProfile(response.data);
 
-        // Busca eventos associados a este perfil
         const eventsResponse = await axios.get(
-          `${API_URL}/api/events/user/${data.id}`
+          `${API_URL}/api/events/user/${response.data.id}`
         );
         setEvents(eventsResponse.data);
 
-        // Lógica de Follow: só checa se não for o próprio perfil
-        const viewedId = Number(data.id);
-        const currentId = user?.id ? Number(user.id) : null;
-
-        if (currentId && viewedId && viewedId !== currentId) {
-          fetchFollowStatus(viewedId);
-        } else {
-          setIsFollowing(null); // Esconde o botão se for o próprio dono
+        if (
+          loggedInUser?.id &&
+          Number(response.data.id) !== Number(loggedInUser.id)
+        ) {
+          fetchFollowStatus(Number(response.data.id));
         }
+        loadFeedSidebar();
       } catch (error) {
-        console.error("Erro ao carregar dados da página:", error);
         setProfile(null);
       }
     };
-
     if (username) fetchProfileData();
-  }, [username, user?.id, fetchFollowStatus]);
+  }, [username, loggedInUser?.id, fetchFollowStatus, loadFeedSidebar]);
 
-  if (!profile) {
+  const handleFollowToggle = async () => {
+    if (!profile?.id) return;
+    try {
+      if (isFollowing) {
+        await FollowServices.unfollow(Number(profile.id));
+        setIsFollowing(false);
+      } else {
+        await FollowServices.follow({ followed_id: Number(profile.id) });
+        setIsFollowing(true);
+      }
+    } catch (error) {
+      console.error("Erro follow:", error);
+    }
+  };
+
+  if (!profile)
     return (
-      <div className="p-20 text-center font-bold">Carregando perfil...</div>
+      <div className="min-h-screen bg-[#fdfcf8] flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-[#8d984c]" />
+      </div>
     );
-  }
-
-  const getInitials = (first?: string, last?: string) =>
-    `${(first || "").charAt(0)}${(last || "").charAt(0)}`.toUpperCase();
 
   const fullName =
     `${profile.first_name || ""} ${profile.last_name || ""}`.trim() ||
     profile.username;
 
   return (
-    <div>
+    <div className="min-h-screen bg-[#fdfcf8] text-[#6c562c]">
       <Header />
-      <div className="min-h-screen bg-green-50 py-16 px-4">
-        <div className="max-w-xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden">
-          {/* Header Decorativo */}
-          <div className="h-32 bg-teal-600/80"></div>
 
-          <div className="p-8 relative">
-            {/* Foto de Perfil */}
-            <div className="relative -mt-20 flex justify-center mb-6">
-              {profile.profile_picture_url ? (
-                <img
-                  src={profile.profile_picture_url}
-                  alt="Profile"
-                  className="w-24 h-24 object-cover rounded-full border-4 border-white shadow-lg"
-                />
+      <main className="container max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          <section className="lg:col-span-7 xl:col-span-8 space-y-8">
+            {/* Header do Perfil Estilizado */}
+            <div className="bg-white rounded-[2.5rem] shadow-[0_4px_20px_rgba(141,152,76,0.1)] overflow-hidden border border-[#8d984c]/5">
+              <div className="h-40 bg-[#8d984c]/20 relative">
+                <Link to="/" className="absolute top-6 left-6">
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    className="rounded-full bg-white/80 backdrop-blur-sm hover:bg-white text-[#6c562c] gap-2"
+                  >
+                    <ArrowLeft className="h-4 w-4" /> Voltar
+                  </Button>
+                </Link>
+              </div>
+
+              <div className="px-8 pb-8 relative">
+                {/* Avatar Posicionado */}
+                <div className="relative -mt-16 flex items-end justify-between mb-6 px-2">
+                  <div className="relative">
+                    <div className="w-32 h-32 rounded-[2rem] border-4 border-[#fdfcf8] overflow-hidden shadow-xl bg-white">
+                      {profile.profile_picture_url ? (
+                        <img
+                          src={profile.profile_picture_url}
+                          alt={fullName}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center bg-[#8d984c]/10 text-[#8d984c] text-4xl font-serif">
+                          {profile.username.charAt(0).toUpperCase()}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Botões de Ação */}
+                  <div className="flex gap-3 pb-2">
+                    {isCreator ? (
+                      <Link to={`/profile/edit/${username}`}>
+                        <Button className="bg-[#8d984c] hover:bg-[#6c562c] text-white rounded-2xl px-6 gap-2 shadow-md shadow-[#8d984c]/20">
+                          <Edit3 className="h-4 w-4" /> Editar Perfil
+                        </Button>
+                      </Link>
+                    ) : (
+                      isFollowing !== null && (
+                        <Button
+                          onClick={handleFollowToggle}
+                          variant={isFollowing ? "outline" : "default"}
+                          className={`rounded-2xl px-8 font-bold transition-all ${
+                            isFollowing
+                              ? "border-[#8d984c] text-[#8d984c] hover:bg-red-50 hover:border-red-200 hover:text-red-600"
+                              : "bg-[#8d984c] hover:bg-[#6c562c] text-white"
+                          }`}
+                        >
+                          {isFollowing ? (
+                            <>
+                              <UserMinus className="h-4 w-4 mr-2" /> Seguindo
+                            </>
+                          ) : (
+                            <>
+                              <UserPlus className="h-4 w-4 mr-2" /> Seguir
+                            </>
+                          )}
+                        </Button>
+                      )
+                    )}
+                  </div>
+                </div>
+
+                <div className="space-y-1">
+                  <h1 className="text-3xl font-serif font-bold text-[#6c562c] tracking-tight">
+                    {fullName}
+                  </h1>
+                  <p className="text-[#8d984c] font-medium text-lg italic">
+                    @{profile.username}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex border-t border-[#8d984c]/10 bg-[#8d984c]/5 py-4 px-8 gap-8">
+                <div className="text-center">
+                  <span className="block font-bold text-[#6c562c]">
+                    {events.length}
+                  </span>
+                  <span className="text-[10px] uppercase tracking-widest font-bold opacity-60">
+                    Eventos
+                  </span>
+                </div>
+                <div className="text-center">
+                  <span className="block font-bold text-[#6c562c]">
+                    {following.length}
+                  </span>
+                  <span className="text-[10px] uppercase tracking-widest font-bold opacity-60">
+                    Seguidores
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-6">
+              <div className="flex items-center gap-2 px-2">
+                <h2 className="font-serif text-2xl font-bold text-[#6c562c]">
+                  Eventos Criados
+                </h2>
+                <div className="h-px flex-1 bg-[#8d984c]/20 ml-4" />
+              </div>
+
+              {events.length > 0 ? (
+                <div className="grid gap-8">
+                  {events.map((event) => (
+                    <EventCard
+                      key={event.id}
+                      {...event}
+                      username={profile.username}
+                      profile_picture_url={profile.profile_picture_url}
+                    />
+                  ))}
+                </div>
               ) : (
-                <div className="w-24 h-24 flex items-center justify-center rounded-full bg-green-200 text-teal-700 text-3xl font-black border-4 border-white shadow-lg ">
-                  {getInitials(profile.first_name, profile.last_name)}
+                <div className="text-center py-20 bg-white/50 rounded-[2.5rem] border-2 border-dashed border-[#8d984c]/20">
+                  <p className="text-[#8d984c]/60 italic">
+                    Nenhum evento criado por aqui ainda...
+                  </p>
                 </div>
               )}
             </div>
+          </section>
 
-            <div className="text-center mb-8">
-              <h1 className="text-3xl font-black text-gray-900">{fullName}</h1>
-              <p className="text-xl text-emerald-600 font-semibold mt-1">
-                @{profile.username}
-              </p>
-            </div>
+          <aside className="lg:col-span-5 xl:col-span-4 space-y-8 lg:sticky lg:top-24">
+            <FollowingList following={following} />
+            <UpcomingEvents
+              events={events.slice(0, 3)}
+              currentUserId={String(profile.id)}
+            />
 
-            {/* Seção de Botões */}
-            <div className="flex flex-col md:flex-row gap-4">
-              {/* Botão Seguir/Seguindo: Só aparece se NÃO for o dono e se soubermos o status */}
-              {!isCreator && isFollowing !== null && (
-                <button
-                  onClick={handleFollowToggle}
-                  className={`w-full py-3 px-4 font-bold rounded-lg transition duration-300 shadow-md ${
-                    isFollowing
-                      ? "bg-gray-400 hover:bg-gray-500 text-white"
-                      : "bg-emerald-600 hover:bg-emerald-700 text-white"
-                  }`}
-                >
-                  {isFollowing ? "Seguindo" : "Seguir"}
-                </button>
-              )}
-
-              {/* Botão Editar: Só aparece para o dono */}
-              {isCreator && (
-                <Link to={`/profile/edit/${username}`} className="w-full">
-                  <button className="w-full py-3 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg shadow-md">
-                    Editar Perfil
-                  </button>
-                </Link>
-              )}
-
-              <Link to="/profile" className="w-full">
-                <button className="w-full py-3 px-4 border border-gray-300 bg-white hover:bg-green-100 text-gray-700 font-bold rounded-lg transition shadow-sm">
-                  Voltar
-                </button>
-              </Link>
-            </div>
-          </div>
-
-          {/* Listagem de Eventos */}
-          <div className="p-8 border-t border-gray-100">
-            <h2 className="text-2xl font-bold text-gray-800 mb-6">
-              Eventos Criados
-            </h2>
-            {events.length > 0 ? (
-              <div className="space-y-4">
-                {events.map((event) => (
-                  <Link
-                    key={event.id}
-                    to={`/events/${event.id}`}
-                    className="block p-4 border rounded-xl hover:bg-green-50 transition-colors"
-                  >
-                    <h3 className="font-bold text-teal-700">{event.name}</h3>
-                    <p className="text-sm text-gray-500">
-                      {new Date(event.event_date).toLocaleDateString()}
-                    </p>
-                  </Link>
-                ))}
-              </div>
-            ) : (
-              <p className="text-gray-500 italic">
-                Este usuário ainda não criou eventos.
-              </p>
-            )}
-          </div>
+            <footer className="px-6 py-4 opacity-40 text-[10px] font-bold uppercase tracking-[0.2em]">
+              © 2026 Kaax • Organic Community
+            </footer>
+          </aside>
         </div>
-      </div>
+      </main>
     </div>
   );
 }

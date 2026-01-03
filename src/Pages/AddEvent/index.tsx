@@ -54,9 +54,9 @@ function AddEvent(): JSX.Element {
       if (userFollowing) setFollowing(userFollowing);
 
       setEvents((prev) => {
-        const existingIds = new Set(prev.map((e) => e._id));
+        const existingIds = new Set(prev.map((e) => e.id));
         const uniqueNewEvents = newEvents.filter(
-          (e) => !existingIds.has(e._id)
+          (e) => !existingIds.has(e.id)
         );
 
         return [...prev, ...uniqueNewEvents];

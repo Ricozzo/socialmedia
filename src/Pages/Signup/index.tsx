@@ -9,7 +9,7 @@ function SignUpPage(): JSX.Element {
     email: "",
     username: "",
     password: "",
-    firstName: "",
+    first_name: "",
     lastName: "",
     birthDate: "",
     phone: "",
@@ -92,10 +92,10 @@ function SignUpPage(): JSX.Element {
                 </label>
                 <input
                   type="text"
-                  name="firstName"
+                  name="first_name"
                   placeholder="Primeiro Nome"
                   className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-100 text-[#6c562c] focus:ring-2 focus:ring-[#8d984c] outline-none"
-                  value={form.firstName}
+                  value={form.first_name}
                   onChange={handleForm}
                 />
               </div>

@@ -45,9 +45,9 @@ const Index: React.FC = () => {
       if (userFollowing) setFollowing(userFollowing);
 
       setEvents((prev) => {
-        const existingIds = new Set(prev.map((e) => e._id));
+        const existingIds = new Set(prev.map((e) => e.id));
         const uniqueNewEvents = newEvents.filter(
-          (e: any) => !existingIds.has(e._id)
+          (e: any) => !existingIds.has(e.id)
         );
         return [...prev, ...uniqueNewEvents];
       });
@@ -96,7 +96,7 @@ const Index: React.FC = () => {
             <div className="flex flex-col gap-8">
               {events.map((event, index) => (
                 <div
-                  key={`${event._id}-${index}`}
+                  key={`${event.id}-${index}`}
                   className="animate-in fade-in slide-in-from-bottom-6 duration-700 ease-out"
                   style={{ animationDelay: `${(index % 3) * 150}ms` }}
                 >
@@ -153,7 +153,7 @@ const Index: React.FC = () => {
             <div className="animate-in fade-in slide-in-from-right-8 duration-700 delay-400">
               <UpcomingEvents
                 events={events.slice(0, 3)}
-                currentUserId={profile?._id || ""}
+                currentUserId={profile?.id || ""}
               />
             </div>
 

@@ -2,7 +2,7 @@ export interface IUser {
   id: number;
   email: string;
   username: string;
-  firstName: string;
+  first_name: string;
   lastName: string;
   birth_date: Date;
   phone_number: string;
@@ -45,7 +45,7 @@ export interface ISignupPayload {
   email: string;
   password: string;
   username: string;
-  firstName: string;
+  first_name: string;
   lastName: string;
   birthDate: string;
   phone: string;
@@ -77,7 +77,7 @@ export interface IEventDetail {
 }
 
 export interface IEventResponse extends IEventDetail {
-  _id: string;
+  id: string;
   creator_id: number;
   created_at: string;
   updated_at: string;

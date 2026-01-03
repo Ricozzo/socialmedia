@@ -45,8 +45,8 @@ function EventsListPage() {
     <h2>Join Us</h2>
       <div className="event-card-container">
         {events.map((event) => (
-          <div className="event-card" key={event._id}>
-            <Link to={`/events/${event._id}`}>
+          <div className="event-card" key={event.id}>
+            <Link to={`/events/${event.id}`}>
               <div className="event-content">
                 <div className="event-image">
                   <img src={event.imageUrl} alt="" className="event-image" />
