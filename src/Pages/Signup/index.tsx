@@ -20,6 +20,17 @@ function SignUpPage(): JSX.Element {
     undefined
   );
 
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    const regex = /^[a-z0-9_]+$/;
+    if (
+      !regex.test(event.key) &&
+      event.key !== "Backspace" &&
+      event.key !== "Tab"
+    ) {
+      event.preventDefault();
+    }
+  };
+
   const navigate = useNavigate();
 
   const handleForm = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -126,6 +137,7 @@ function SignUpPage(): JSX.Element {
                 </div>
                 <input
                   type="text"
+                  onKeyDown={handleKeyPress}
                   name="username"
                   placeholder="exemplo"
                   className="w-full py-3 pr-4 bg-transparent text-[#6c562c] outline-none placeholder:text-gray-400"
