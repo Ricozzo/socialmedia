@@ -25,7 +25,7 @@ const Index: React.FC = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
-      navigate("/login");
+      navigate("/auth/login");
     }
   }, [navigate]);
 

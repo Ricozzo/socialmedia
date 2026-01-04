@@ -28,7 +28,7 @@ function App() {
         />
         <Route path="/profile/:username" element={<MyProfile />} />
         <Route
-          path="/login"
+          path="/auth/login"
           element={
             <IsAnon>
               <LoginPage />       

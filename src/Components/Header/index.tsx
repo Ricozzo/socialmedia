@@ -12,7 +12,7 @@ export function Header() {
 
   const handleLogout = () => {
     logoutUser();
-    navigate("/login");
+    navigate("/auth/login");
   };
 
   return (
@@ -78,7 +78,7 @@ export function Header() {
             </>
           ) : (
             <div className="flex gap-2">
-              <Link to="/login">
+              <Link to="/auth/login">
                 <Button variant="ghost" className="text-[#6c562c]">
                   Entrar
                 </Button>

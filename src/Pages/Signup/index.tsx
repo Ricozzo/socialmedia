@@ -59,7 +59,7 @@ function SignUpPage(): JSX.Element {
     authService
       .signup(uploadData as unknown as ISignupPayload)
       .then(() => {
-        navigate("/login");
+        navigate("/auth/login");
       })
       .catch((error) => {
         const errorDescription =
@@ -234,7 +234,7 @@ function SignUpPage(): JSX.Element {
           <div className="mt-8 text-center border-t border-gray-100 pt-6">
             <p className="text-gray-500 text-sm mb-2">Já possui uma conta?</p>
             <Link
-              to={"/login"}
+              to={"/auth/login"}
               className="text-[#b59659] font-bold hover:text-[#bfa064] transition-colors underline underline-offset-8"
             >
               Iniciar sessão

@@ -23,7 +23,7 @@ class AuthService {
   public login = (
     requestBody: ILoginPayload
   ): Promise<AxiosResponse<ILoginResponse>> => {
-    return this.api.post<ILoginResponse>("/api/login", requestBody);
+    return this.api.post<ILoginResponse>("/api/auth/login", requestBody);
   };
 
   public signup = (
