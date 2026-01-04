@@ -205,7 +205,7 @@ function ProfileDetailsPage() {
                     {following.length}
                   </span>
                   <span className="text-[10px] uppercase tracking-widest font-bold opacity-60">
-                    Seguidores
+                    Seguindo
                   </span>
                 </div>
               </div>
