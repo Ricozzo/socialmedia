@@ -24,6 +24,11 @@ class ProfileService {
   public myProfile = (username: string): Promise<AxiosResponse<IProfile>> => {
     return this.api.get<IProfile>(`/api/profile/${username}`);
   };
+
+   // GET /api/profile/search
+  public searchProfiles = (q: string): Promise<AxiosResponse<IProfile[]>> => {
+    return this.api.get<IProfile[]>(`/api/profile/search?q=${q}`);
+  };
 }
 
 const profileService: ProfileService = new ProfileService();

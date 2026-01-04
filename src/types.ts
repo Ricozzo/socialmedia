@@ -12,6 +12,7 @@ export interface IUser {
 }
 
 export interface IProfile {
+  id: string;
   username: string;
   first_name: string;
   last_name: string;
