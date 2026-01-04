@@ -3,7 +3,7 @@ export interface IUser {
   email: string;
   username: string;
   first_name: string;
-  lastName: string;
+  last_name: string;
   birth_date: Date;
   phone_number: string;
   profilePictureUrl: string;
@@ -16,6 +16,8 @@ export interface IProfile {
   username: string;
   first_name: string;
   last_name: string;
+  birth_date: string;
+  phone_number: string;
   profile_picture_url: string;
 }
 
@@ -47,8 +49,8 @@ export interface ISignupPayload {
   password: string;
   username: string;
   first_name: string;
-  lastName: string;
-  birthDate: string;
+  last_name: string;
+  birth_date: string;
   phone: string;
   profilePictureUrl: string;
 }

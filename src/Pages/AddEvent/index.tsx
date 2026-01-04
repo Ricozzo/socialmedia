@@ -179,17 +179,18 @@ function AddEvent(): JSX.Element {
                   {eDetail.description.length} / 30 caracteres mínimos
                 </p>
               </div>
-              <div></div>
-              <label className="block text-xs uppercase tracking-widest font-bold text-[#6c562c] mb-1 ml-1">
-                Data:
-              </label>
-              <input
-                type="date"
-                name="event_date"
-                className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-100 text-[#6c562c] focus:ring-2 focus:ring-[#8d984c] outline-none"
-                value={eDetail.event_date}
-                onChange={handleEventChange}
-              />
+              <div>
+                <label className="block text-xs uppercase tracking-widest font-bold text-[#6c562c] mb-1 ml-1">
+                  Data:
+                </label>
+                <input
+                  type="date"
+                  name="event_date"
+                  className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-100 text-[#6c562c] focus:ring-2 focus:ring-[#8d984c] outline-none"
+                  value={eDetail.event_date}
+                  onChange={handleEventChange}
+                />
+              </div>
               <div>
                 <label className="block text-xs uppercase tracking-widest font-bold text-[#6c562c] mb-1 ml-1">
                   Horário:

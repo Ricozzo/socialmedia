@@ -167,7 +167,7 @@ const Index: React.FC = () => {
             </div>
             <div className="pt-4 px-6 opacity-50">
               <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#8d984c]">
-                © 2026 Kaax — Feito com carinho
+                © 2026 Kaax
               </p>
             </div>
           </aside>

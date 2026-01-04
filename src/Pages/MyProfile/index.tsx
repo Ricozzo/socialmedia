@@ -150,7 +150,7 @@ function ProfileDetailsPage() {
                   {/* Botões de Ação */}
                   <div className="flex gap-3 pb-2">
                     {isCreator ? (
-                      <Link to={`/profile/edit/${username}`}>
+                      <Link to={`/profile/edit`}>
                         <Button className="bg-[#8d984c] hover:bg-[#6c562c] text-white rounded-2xl px-6 gap-2 shadow-md shadow-[#8d984c]/20">
                           <Edit3 className="h-4 w-4" /> Editar Perfil
                         </Button>

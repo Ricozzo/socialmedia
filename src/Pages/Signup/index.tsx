@@ -10,8 +10,8 @@ function SignUpPage(): JSX.Element {
     username: "",
     password: "",
     first_name: "",
-    lastName: "",
-    birthDate: "",
+    last_name: "",
+    birth_date: "",
     phone: "",
     profilePictureUrl: "",
   });
@@ -116,10 +116,10 @@ function SignUpPage(): JSX.Element {
                 </label>
                 <input
                   type="text"
-                  name="lastName"
+                  name="last_name"
                   placeholder="Segundo Nome"
                   className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-100 text-[#6c562c] focus:ring-2 focus:ring-[#8d984c] outline-none"
-                  value={form.lastName}
+                  value={form.last_name}
                   onChange={handleForm}
                 />
               </div>
@@ -181,11 +181,11 @@ function SignUpPage(): JSX.Element {
                 </label>
                 <input
                   type="date"
-                  name="birthDate"
+                  name="birth_date"
                   className={`w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-100 focus:ring-2 focus:ring-[#8d984c] outline-none ${
-                    form.birthDate ? "text-[#6c562c]" : "text-gray-400"
+                    form.birth_date ? "text-[#6c562c]" : "text-gray-400"
                   }`}
-                  value={form.birthDate}
+                  value={form.birth_date}
                   onChange={handleForm}
                 />
               </div>

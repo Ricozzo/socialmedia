@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
-import { IProfile } from "../types";
+import { IProfile, IProfileResponse } from "../types";
 
 class ProfileService {
   private api: AxiosInstance;
@@ -25,9 +25,16 @@ class ProfileService {
     return this.api.get<IProfile>(`/api/profile/${username}`);
   };
 
-   // GET /api/profile/search
+  // GET /api/profile/search
   public searchProfiles = (q: string): Promise<AxiosResponse<IProfile[]>> => {
     return this.api.get<IProfile[]>(`/api/profile/search?q=${q}`);
+  };
+
+  // PATCH /api/profile/:id
+  public updateProfile = (
+    requestBody: Partial<IProfile> 
+  ): Promise<AxiosResponse<IProfileResponse>> => {
+    return this.api.patch<IProfileResponse>("/api/update", requestBody);
   };
 }
 

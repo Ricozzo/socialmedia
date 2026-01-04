@@ -4,11 +4,13 @@ import { Routes, Route } from "react-router-dom";
 import LoginPage from "./Pages/Login/index.tsx";
 import SignUpPage from "./Pages/Signup/index.tsx";
 import IsAnon from "./Components/isAnon/index.tsx";
+import IsPrivate from "./Components/isPrivate/index.tsx";
 import AddEvents from "./Pages/AddEvent/index.tsx";
 import DetailsEvent from "./Pages/Details/index.tsx";
 import UpdateEvent from "./Pages/EditEvent/index.tsx";
 import MyProfile from "./Pages/MyProfile/index.tsx";
-import HomePage from "./Pages/Home/index.tsx"
+import UpdateMyProfile from "./Pages/EditMyProfile/index.tsx";
+import HomePage from "./Pages/Home/index.tsx";
 
 function App() {
   return (
@@ -27,6 +29,14 @@ function App() {
           }
         />
         <Route path="/profile/:username" element={<MyProfile />} />
+        <Route
+          path="/profile/edit"
+          element={
+            <IsPrivate>
+              <UpdateMyProfile />
+            </IsPrivate>
+          }
+        />
         <Route
           path="/auth/login"
           element={
