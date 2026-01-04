@@ -55,9 +55,7 @@ function AddEvent(): JSX.Element {
 
       setEvents((prev) => {
         const existingIds = new Set(prev.map((e) => e.id));
-        const uniqueNewEvents = newEvents.filter(
-          (e) => !existingIds.has(e.id)
-        );
+        const uniqueNewEvents = newEvents.filter((e) => !existingIds.has(e.id));
 
         return [...prev, ...uniqueNewEvents];
       });
@@ -120,9 +118,9 @@ function AddEvent(): JSX.Element {
       uploadData.append("eventPicture", fileToUpload);
     }
     eventService
-      .createEvent(uploadData)
-      .then((response) => {
-        navigate("/events");
+      .createEvent(uploadData as unknown as IEventDetail)
+      .then(() => {
+        navigate("/");
       })
       .catch((error) => {
         const errorDescription =
@@ -167,7 +165,7 @@ function AddEvent(): JSX.Element {
               </div>
               <div>
                 <label className="block text-xs uppercase tracking-widest font-bold text-[#6c562c] mb-1 ml-1">
-                  Descrição do Evento:
+                  Descrição (mínimo 30 caracteres):
                 </label>
                 <input
                   type="text"
@@ -177,6 +175,9 @@ function AddEvent(): JSX.Element {
                   value={eDetail.description}
                   onChange={handleEventChange}
                 />
+                <p className="text-[12px] text-[#6c562c]">
+                  {eDetail.description.length} / 30 caracteres mínimos
+                </p>
               </div>
               <div></div>
               <label className="block text-xs uppercase tracking-widest font-bold text-[#6c562c] mb-1 ml-1">

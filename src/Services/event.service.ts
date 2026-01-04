@@ -22,7 +22,7 @@ class EventService {
 
   // POST /api/events
   public createEvent = (
-    requestBody: IEventDetail
+    requestBody: IEventDetail | FormData
   ): Promise<AxiosResponse<IEventResponse>> => {
     return this.api.post<IEventResponse>("/api/events", requestBody);
   };
