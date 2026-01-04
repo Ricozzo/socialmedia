@@ -104,15 +104,19 @@ const Index: React.FC = () => {
             </div>
 
             <div className="flex flex-col gap-8">
-              {events.map((event, index) => (
-                <div
-                  key={`${event.id}-${index}`}
-                  className="animate-in fade-in slide-in-from-bottom-6 duration-700 ease-out"
-                  style={{ animationDelay: `${(index % 3) * 150}ms` }}
-                >
-                  <EventCard {...event} />
-                </div>
-              ))}
+              {events.map((event, index) => {
+                const finalId = event._id || event.event_id;
+
+                return (
+                  <div
+                    key={`${finalId}-${index}`}
+                    className="animate-in fade-in slide-in-from-bottom-6 duration-700 ease-out"
+                    style={{ animationDelay: `${(index % 3) * 150}ms` }}
+                  >
+                    <EventCard id={finalId} {...event} />
+                  </div>
+                );
+              })}
             </div>
             <div
               ref={loaderRef}

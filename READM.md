@@ -1,16 +1,6 @@
-# Casa T
-
 <br>
 
-
-
 ## Description
-
-Casa T is an ONG in Lisbon that helps trans refugees.
-The project is going to be a full-stack web app for the ONG that will allow people to get information about the organization.
-In the web app, the focus is to create tolls to do donations, get information about events, allow subscribers to subscribe as a membership and pay a monthly fee (you can choose the amount) to help finance the house, see places to get free exams (HIV, Sifilis, hepatitis, etc.), etc.
-
-
 
 <br>
 
@@ -125,5 +115,3 @@ Link to be provided later
 
 ### Contributors
 Henrique Ortiz - [`github`](https://github.com/Ricozzo) - [`Linkedin`](https://www.linkedin.com/in/henriqueortizpereira/)
-
-Roobson Batista - [`github`](https://github.com/RobBatista) - [`Linkedin`](https://www.linkedin.com/in/robsonbatista1/)
