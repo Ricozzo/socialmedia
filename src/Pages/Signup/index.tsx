@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import "react-phone-input-2/lib/style.css";
 import { Link, useNavigate } from "react-router-dom";
 import authService from "../../Services/auth.services";
+import PhoneInput from "react-phone-input-2";
 import { ISignupPayload } from "../../types";
 import logoKaaxDool from "../../assets/logoKaax.png";
 
@@ -12,7 +14,7 @@ function SignUpPage(): JSX.Element {
     first_name: "",
     last_name: "",
     birth_date: "",
-    phone: "",
+    phone_number: "",
     profilePictureUrl: "",
   });
   const [fileToUpload, setFileToUpload] = useState<File | null>(null);
@@ -46,7 +48,12 @@ function SignUpPage(): JSX.Element {
     const uploadData = new FormData();
 
     Object.keys(form).forEach((key) => {
-      const val = form[key as keyof ISignupPayload];
+      let val = form[key as keyof ISignupPayload];
+
+      if (key === "phone_number" && val && !(val as string).startsWith("+")) {
+        val = `+${val}`;
+      }
+
       if (key !== "profilePictureUrl" || val) {
         uploadData.append(key, val as string | Blob);
       }
@@ -195,13 +202,18 @@ function SignUpPage(): JSX.Element {
               <label className="block text-xs uppercase tracking-widest font-bold text-[#6c562c] mb-1 ml-1">
                 Telefone
               </label>
-              <input
-                type="text"
-                name="phone"
-                placeholder="Telefone"
-                className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-100 text-[#6c562c] focus:ring-2 focus:ring-[#8d984c] outline-none"
-                value={form.phone}
-                onChange={handleForm}
+              <PhoneInput
+                country={"br"}
+                value={form.phone_number}
+                onChange={(value) => setForm({ ...form, phone_number: value })}
+                containerClass="!w-full"
+                inputClass={`!w-full !px-10 !py-3 !h-[50px] !rounded-xl !bg-gray-50 !border !border-gray-100 !focus:ring-2 !focus:ring-[#8d984c] !outline-none ${
+                  form.phone_number ? "!text-[#6c562c]" : "!text-gray-400"
+                }`}
+                buttonClass="!bg-gray-50 !border-gray-100 !rounded-l-xl !border-r-0"
+                dropdownClass="!bg-white !rounded-xl !shadow-xl !border-gray-100"
+                placeholder="Seu telefone"
+                enableSearch={true}
               />
             </div>
 
