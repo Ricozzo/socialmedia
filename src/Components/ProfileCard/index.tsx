@@ -19,29 +19,38 @@ interface ProfileCardProps {
 }
 
 export function ProfileCard({ user, followingCount }: ProfileCardProps) {
+  if (!user?.username) {
+    return (
+      <div className="h-64 w-full bg-[#8d984c]/5 animate-pulse rounded-[2.5rem] border border-[#8d984c]/10" />
+    );
+  }
+
+  const initials = user.username.charAt(0).toUpperCase();
+
   return (
     <div className="rounded-3xl shadow-[0_4px_20px_rgba(141,152,76,0.15)] transition-all hover:shadow-[0_4px_25px_rgba(141,152,76,0.25)]">
       <Card className="bg-[#fdfcf8] border-none shadow-none rounded-3xl overflow-hidden">
         <CardContent className="p-8">
           <div className="flex flex-col items-center text-center">
-            <Link to={`/profile/${user?.username}`}>
-              <Avatar className="h-24 w-24 ring-4 ring-[#8d984c] ring-offset-4 ring-offset-[#fdfcf8] mb-6 shadow-sm">
+            <Link to={`/profile/${user.username}`}>
+              <Avatar className="h-24 w-24 ring-4 ring-[#8d984c] ring-offset-4 ring-offset-[#fdfcf8] mb-6 shadow-sm transition-transform hover:scale-105">
                 <AvatarImage
                   src={user.profile_picture_url}
                   alt={user.username}
                   className="object-cover"
                 />
                 <AvatarFallback className="bg-[#8d984c] text-white text-3xl font-serif">
-                  {user.username?.charAt(0).toUpperCase()}
+                  {initials}
                 </AvatarFallback>
               </Avatar>
             </Link>
+
             <div className="space-y-1 mb-4">
               <h2 className="font-serif text-2xl font-bold text-[#6c562c] tracking-tight">
-                {user.first_name}
+                {user.first_name || "Utilizador"}
               </h2>
               <p className="text-sm font-medium text-[#8d984c]/80 italic">
-                @{user.username.toLowerCase()}
+                @{user.username?.toLowerCase()}
               </p>
             </div>
 

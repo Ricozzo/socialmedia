@@ -19,14 +19,11 @@ const Index: React.FC = () => {
 
   const loaderRef = useRef<HTMLDivElement | null>(null);
   const LIMIT = 10;
-
   const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
-    if (!token) {
-      navigate("/auth/login");
-    }
+    if (!token) navigate("/auth/login");
   }, [navigate]);
 
   const loadFeed = useCallback(async () => {
@@ -36,11 +33,7 @@ const Index: React.FC = () => {
     try {
       const response = await feedService.getFeedData(LIMIT, offset);
 
-      if (
-        !response.data ||
-        !response.data.events ||
-        response.data.events.length === 0
-      ) {
+      if (!response.data || !response.data.events) {
         setHasMore(false);
         return;
       }
@@ -52,25 +45,28 @@ const Index: React.FC = () => {
       } = response.data;
 
       if (!profile && userProfile) setProfile(userProfile);
-      if (userFollowing) setFollowing(userFollowing);
+      if (following.length === 0 && userFollowing) setFollowing(userFollowing);
 
-      setEvents((prev) => {
-        const existingIds = new Set(prev.map((e) => e.id));
-        const uniqueNewEvents = newEvents.filter(
-          (e: any) => !existingIds.has(e.id)
-        );
-        return [...prev, ...uniqueNewEvents];
-      });
-
-      if (newEvents.length < LIMIT) {
+      if (newEvents.length === 0) {
         setHasMore(false);
+      } else {
+        setEvents((prev) => {
+          const existingIds = new Set(prev.map((e) => e.id));
+          const uniqueNewEvents = newEvents.filter(
+            (e: any) => !existingIds.has(e.id)
+          );
+          return [...prev, ...uniqueNewEvents];
+        });
+
+        if (newEvents.length < LIMIT) setHasMore(false);
       }
     } catch (error) {
       console.error("Erro ao carregar o feed:", error);
+      setHasMore(false);
     } finally {
       setLoading(false);
     }
-  }, [offset, hasMore, loading, profile]);
+  }, [offset, hasMore, loading, profile, following.length]);
 
   useEffect(() => {
     loadFeed();
@@ -86,8 +82,12 @@ const Index: React.FC = () => {
       { threshold: 0.1 }
     );
 
-    if (loaderRef.current) observer.observe(loaderRef.current);
-    return () => observer.disconnect();
+    const currentLoader = loaderRef.current;
+    if (currentLoader) observer.observe(currentLoader);
+
+    return () => {
+      if (currentLoader) observer.unobserve(currentLoader);
+    };
   }, [hasMore, loading]);
 
   return (
@@ -114,7 +114,6 @@ const Index: React.FC = () => {
                 </div>
               ))}
             </div>
-
             <div
               ref={loaderRef}
               className="py-16 flex flex-col items-center justify-center gap-4"
@@ -153,7 +152,7 @@ const Index: React.FC = () => {
                 <ProfileCard user={profile} followingCount={following.length} />
               </div>
             ) : (
-              <div className="h-48 w-full bg-[#8d984c]/5 animate-pulse rounded-[2rem]" />
+              <div className="h-64 w-full bg-[#8d984c]/5 animate-pulse rounded-[2.5rem]" />
             )}
 
             <div className="animate-in fade-in slide-in-from-right-8 duration-700 delay-200">
@@ -166,21 +165,9 @@ const Index: React.FC = () => {
                 currentUserId={profile?.id || ""}
               />
             </div>
-
-            <div className="pt-4 px-6">
-              <div className="flex flex-wrap gap-x-4 gap-y-2 text-[10px] font-bold uppercase tracking-widest text-[#8d984c]/50">
-                <span className="hover:text-[#8d984c] cursor-pointer transition-colors">
-                  Privacidade
-                </span>
-                <span className="hover:text-[#8d984c] cursor-pointer transition-colors">
-                  Termos
-                </span>
-                <span className="hover:text-[#8d984c] cursor-pointer transition-colors">
-                  Ajuda
-                </span>
-              </div>
-              <p className="mt-4 text-[10px] text-[#8d984c]/30 font-bold uppercase tracking-[0.2em]">
-                © 2026 Kaax
+            <div className="pt-4 px-6 opacity-50">
+              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#8d984c]">
+                © 2026 Kaax — Feito com carinho
               </p>
             </div>
           </aside>
